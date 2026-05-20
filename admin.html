@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Tu Evento Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold-2:#e8c97a;--gold-deep:#826636;
+  --gold-line:rgba(201,168,76,.2);--gold-line-2:rgba(201,168,76,.38);
+  --noir:#0a0805;--noir-2:#140e08;--champagne:#f0e6d3;
+  --muted:rgba(240,230,211,.45);--ink:#2d2418;
+  --green:#7ec49a;--red:#c48080;--amber:#c9913a;--blue:#88b8e8;
+  --serif:'Cormorant Garamond',serif;--caps:'Cinzel',serif;--sans:'Montserrat',sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--noir);color:var(--champagne);font-family:var(--sans);height:100%;-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;}
+
+/* ── BG ── */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 90% 60% at 50% 0%,#1a120a,#0a0805 55%,#050302);}
+.bg-grain{position:absolute;inset:0;opacity:.1;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .8 0 0 0 0 .68 0 0 0 0 .4 0 0 0 .4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+  background:rgba(5,3,2,.97);backdrop-filter:blur(8px);}
+#loginScreen.hidden{display:none;}
+.login-box{background:rgba(255,255,255,.025);border:1px solid var(--gold-line-2);
+  border-radius:4px;padding:2.5rem 2rem;width:min(380px,90vw);text-align:center;}
+.login-logo{font-family:var(--caps);font-size:.65rem;letter-spacing:.5em;color:var(--gold);margin-bottom:.5rem;}
+.login-sub{font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--muted);margin-bottom:1.8rem;}
+.login-rule{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:.6rem auto 1.5rem;}
+.login-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gold-line);
+  border-radius:2px;padding:.75rem 1rem;color:var(--champagne);font-size:.9rem;
+  outline:none;text-align:center;letter-spacing:.15em;transition:border-color .25s;margin-bottom:.8rem;}
+.login-input:focus{border-color:var(--gold-line-2);}
+.login-btn{width:100%;background:var(--gold);color:var(--noir);border:none;border-radius:2px;
+  padding:.75rem;font-family:var(--caps);font-size:.45rem;letter-spacing:.3em;
+  transition:background .25s;}
+.login-btn:hover{background:var(--gold-2);}
+.login-err{color:var(--red);font-size:.8rem;margin-top:.5rem;min-height:1rem;font-family:var(--serif);font-style:italic;}
+
+/* ── LAYOUT ── */
+#app{position:relative;z-index:1;display:grid;grid-template-rows:56px 1fr;min-height:100svh;}
+
+/* ── HEADER ── */
+.header{background:rgba(10,8,5,.92);border-bottom:1px solid var(--gold-line);
+  display:flex;align-items:center;gap:1rem;padding:0 1.4rem;
+  backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+.header-logo{font-family:var(--caps);font-size:.55rem;letter-spacing:.45em;color:var(--gold);opacity:.85;}
+.header-sep{flex:1;}
+.header-count{font-family:var(--caps);font-size:.38rem;letter-spacing:.3em;color:var(--muted);}
+.header-btn{font-family:var(--caps);font-size:.4rem;letter-spacing:.28em;
+  padding:.38rem .8rem;border-radius:2px;border:1px solid var(--gold-line);
+  color:rgba(201,168,76,.55);background:transparent;transition:all .25s;}
+.header-btn:hover{color:var(--gold);border-color:var(--gold-line-2);}
+.header-btn.primary{background:var(--gold);color:var(--noir);border-color:var(--gold);}
+.header-btn.primary:hover{background:var(--gold-2);}
+
+/* ── MAIN BODY ── */
+.body-wrap{display:grid;grid-template-columns:300px 1fr;min-height:0;overflow:hidden;}
+@media(max-width:900px){.body-wrap{grid-template-columns:1fr;}}
+
+/* ── SIDEBAR LIST ── */
+.sidebar{border-right:1px solid var(--gold-line);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-top{padding:.8rem 1rem;border-bottom:1px solid var(--gold-line);display:flex;flex-direction:column;gap:.5rem;}
+.search-input{background:rgba(255,255,255,.04);border:1px solid var(--gold-line);border-radius:2px;
+  padding:.45rem .7rem;font-size:.82rem;color:var(--champagne);outline:none;transition:border-color .25s;}
+.search-input:focus{border-color:var(--gold-line-2);}
+.search-input::placeholder{color:rgba(240,230,211,.2);}
+.filter-tabs{display:flex;gap:.3rem;flex-wrap:wrap;}
+.ftab{font-family:var(--caps);font-size:.36rem;letter-spacing:.22em;
+  padding:.25rem .55rem;border-radius:2px;border:1px solid var(--gold-line);
+  color:rgba(201,168,76,.4);background:transparent;transition:all .2s;}
+.ftab.active,.ftab:hover{color:var(--gold);border-color:var(--gold-line-2);background:rgba(201,168,76,.06);}
+.ftab.active{background:rgba(201,168,76,.1);}
+
+.brief-list{flex:1;overflow-y:auto;}
+.brief-list::-webkit-scrollbar{width:3px;}
+.brief-list::-webkit-scrollbar-thumb{background:var(--gold-line-2);border-radius:2px;}
+
+.brief-item{padding:.9rem 1rem;border-bottom:1px solid rgba(201,168,76,.06);cursor:pointer;
+  transition:background .2s;position:relative;}
+.brief-item:hover{background:rgba(201,168,76,.04);}
+.brief-item.active{background:rgba(201,168,76,.07);border-left:2px solid var(--gold);}
+.brief-item-name{font-family:var(--serif);font-size:.97rem;color:var(--champagne);margin-bottom:.2rem;}
+.brief-item-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.brief-item-date{font-family:var(--caps);font-size:.33rem;letter-spacing:.22em;color:var(--muted);}
+.type-pill{font-family:var(--caps);font-size:.3rem;letter-spacing:.2em;padding:.15rem .4rem;border-radius:2px;}
+.type-casamiento{background:rgba(201,168,76,.12);color:var(--gold);}
+.type-quinceanera{background:rgba(200,120,144,.12);color:#e0a0b0;}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.status-nuevo{background:var(--amber);}
+.status-en_proceso{background:var(--blue);}
+.status-completado{background:var(--green);}
+.status-pausado{background:var(--muted);}
+
+.empty-list{padding:2rem;text-align:center;font-family:var(--serif);font-style:italic;color:var(--muted);font-size:.9rem;}
+
+/* ── DETAIL PANEL ── */
+.detail{flex:1;overflow-y:auto;padding:1.4rem 1.6rem;}
+.detail::-webkit-scrollbar{width:3px;}
+.detail::-webkit-scrollbar-thumb{background:var(--gold-line);border-radius:2px;}
+
+.detail-empty{display:flex;align-items:center;justify-content:center;height:100%;
+  font-family:var(--serif);font-style:italic;color:var(--muted);font-size:1rem;}
+
+.detail-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+  margin-bottom:1.4rem;flex-wrap:wrap;}
+.detail-name{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--champagne);}
+.detail-sub{font-family:var(--caps);font-size:.38rem;letter-spacing:.3em;color:var(--muted);margin-top:.2rem;}
+.detail-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+
+.status-select{font-family:var(--caps);font-size:.4rem;letter-spacing:.22em;
+  background:rgba(255,255,255,.04);border:1px solid var(--gold-line);border-radius:2px;
+  padding:.38rem .7rem;color:var(--champagne);cursor:pointer;outline:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path d='M0 0 L5 6 L10 0' fill='none' stroke='rgba(201,168,76,.5)' stroke-width='1.2'/></svg>");
+  background-repeat:no-repeat;background-position:right .5rem center;background-size:7px;
+  padding-right:1.5rem;-webkit-appearance:none;}
+.status-select option{background:#1a120a;}
+
+/* ── DETAIL SECTIONS ── */
+.detail-section{background:rgba(255,255,255,.02);border:1px solid var(--gold-line);
+  border-radius:3px;padding:1.1rem 1.2rem;margin-bottom:1rem;}
+.section-title{font-family:var(--caps);font-size:.44rem;letter-spacing:.38em;color:var(--gold);
+  opacity:.8;margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--gold-line);}
+.field-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.9rem;}
+.field-item{display:flex;flex-direction:column;gap:.25rem;}
+.field-key{font-family:var(--caps);font-size:.33rem;letter-spacing:.28em;color:rgba(201,168,76,.45);}
+.field-val{font-family:var(--serif);font-size:.94rem;color:var(--champagne);line-height:1.5;}
+.field-val.empty{color:var(--muted);font-style:italic;}
+
+/* Edit mode */
+.field-edit input,.field-edit textarea,.field-edit select{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid var(--gold-line);
+  border-radius:2px;padding:.4rem .6rem;color:var(--champagne);font-size:.88rem;
+  outline:none;transition:border-color .2s;}
+.field-edit input:focus,.field-edit textarea:focus{border-color:var(--gold-line-2);}
+.field-edit textarea{min-height:70px;resize:vertical;}
+
+/* Notes */
+.admin-notes{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--gold-line);
+  border-radius:2px;padding:.65rem .8rem;color:var(--champagne);font-size:.88rem;
+  outline:none;resize:vertical;min-height:80px;transition:border-color .2s;line-height:1.6;}
+.admin-notes:focus{border-color:var(--gold-line-2);}
+
+/* Trivia display */
+.trivia-row{padding:.45rem 0;border-bottom:1px solid rgba(201,168,76,.05);
+  display:grid;grid-template-columns:24px 1fr;gap:.6rem;align-items:baseline;}
+.trivia-row:last-child{border-bottom:none;}
+.trivia-n{font-family:var(--caps);font-size:.35rem;letter-spacing:.15em;color:var(--muted);}
+.trivia-q{font-family:var(--serif);font-size:.88rem;color:var(--champagne);}
+.trivia-opts{font-size:.78rem;color:var(--muted);margin-top:.1rem;line-height:1.5;}
+.trivia-ans{color:var(--green);font-weight:600;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(10px);
+  z-index:900;background:rgba(10,7,3,.97);border:1px solid var(--gold-line-2);
+  border-radius:2px;padding:.6rem 1.3rem;font-family:var(--serif);font-style:italic;
+  font-size:.88rem;color:var(--champagne);opacity:0;transition:all .3s var(--ease);
+  pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.error{border-color:rgba(196,128,128,.4);color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="bg"><div class="bg-grain"></div></div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">PANEL ADMIN</div>
+    <div class="login-rule"></div>
+    <div class="login-sub">Tu Evento Digital</div>
+    <input class="login-input" type="password" id="pwInput" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkLogin()">
+    <button class="login-btn" onclick="checkLogin()">INGRESAR</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="header">
+    <div class="header-logo">ADMIN ✦ TU EVENTO</div>
+    <div class="header-sep"></div>
+    <span class="header-count" id="headerCount"></span>
+    <button class="header-btn" onclick="loadBriefings()" title="Actualizar">↺ ACTUALIZAR</button>
+    <button class="header-btn" onclick="exportCSV()">EXPORTAR CSV</button>
+    <button class="header-btn" onclick="logout()">SALIR</button>
+  </header>
+
+  <div class="body-wrap">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <input class="search-input" type="text" placeholder="Buscar…" oninput="filterList(this.value)" id="searchInput">
+        <div class="filter-tabs">
+          <button class="ftab active" onclick="setFilter('all',this)">TODOS</button>
+          <button class="ftab" onclick="setFilter('nuevo',this)">NUEVOS</button>
+          <button class="ftab" onclick="setFilter('en_proceso',this)">EN PROCESO</button>
+          <button class="ftab" onclick="setFilter('completado',this)">LISTOS</button>
+          <button class="ftab" onclick="setFilter('casamiento',this)">BODA</button>
+          <button class="ftab" onclick="setFilter('quinceanera',this)">XV</button>
+        </div>
+      </div>
+      <div class="brief-list" id="briefList"></div>
+    </aside>
+
+    <!-- DETAIL -->
+    <main class="detail" id="detailPanel">
+      <div class="detail-empty">← Seleccioná un briefing para ver los detalles</div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ CONFIGURACIÓN ══ */
+const CONFIG = {
+  SUPABASE_URL:         'https://TU-PROYECTO.supabase.co',
+  SUPABASE_SERVICE_KEY: 'TU_SERVICE_ROLE_KEY',   // ⚠️ no compartir nunca
+  ADMIN_PASSWORD:       'Betiana19',
+};
+
+/* ══ LOGIN ══ */
+function checkLogin() {
+  const val = document.getElementById('pwInput').value;
+  if (val === CONFIG.ADMIN_PASSWORD) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    loadBriefings();
+  } else {
+    document.getElementById('loginErr').textContent = 'Contraseña incorrecta';
+    setTimeout(() => document.getElementById('loginErr').textContent = '', 2500);
+  }
+}
+function logout() {
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('pwInput').value = '';
+}
+window.addEventListener('load', () => setTimeout(() => document.getElementById('pwInput')?.focus(), 300));
+
+/* ══ STATE ══ */
+let allBriefings = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let selectedId = null;
+let editMode = false;
+
+/* ══ SUPABASE HELPERS ══ */
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': CONFIG.SUPABASE_SERVICE_KEY,
+      'Authorization': `Bearer ${CONFIG.SUPABASE_SERVICE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+    },
+    ...opts,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+/* ══ LOAD ══ */
+async function loadBriefings() {
+  try {
+    allBriefings = await sbFetch('briefings?select=*&order=created_at.desc');
+    renderList();
+    const sel = allBriefings.find(b => b.id === selectedId);
+    if (sel) renderDetail(sel); else document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">← Seleccioná un briefing para ver los detalles</div>';
+    document.getElementById('headerCount').textContent = `${allBriefings.length} BRIEFINGS`;
+  } catch(e) {
+    showToast('Error al cargar: ' + e.message, true);
+  }
+}
+
+/* ══ LIST ══ */
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+function filterList(v) { currentSearch = v.toLowerCase(); renderList(); }
+
+function renderList() {
+  let data = [...allBriefings];
+  if (currentFilter === 'nuevo' || currentFilter === 'en_proceso' || currentFilter === 'completado' || currentFilter === 'pausado')
+    data = data.filter(b => b.status === currentFilter);
+  else if (currentFilter === 'casamiento' || currentFilter === 'quinceanera')
+    data = data.filter(b => b.event_type === currentFilter);
+  if (currentSearch)
+    data = data.filter(b => [b.couple_display,b.girl_display,b.contact_name,b.bride_name,b.groom_name,b.girl_name]
+      .filter(Boolean).some(s => s.toLowerCase().includes(currentSearch)));
+
+  const list = document.getElementById('briefList');
+  if (!data.length) { list.innerHTML = '<div class="empty-list">Sin resultados</div>'; return; }
+
+  list.innerHTML = data.map(b => {
+    const name = b.event_type === 'casamiento' ? (b.couple_display || `${b.bride_name||''} & ${b.groom_name||''}`) : (b.girl_display || b.girl_name || '—');
+    const date = b.event_type === 'casamiento' ? b.event_date : b.party_date;
+    const created = new Date(b.created_at).toLocaleDateString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric'});
+    return `<div class="brief-item ${b.id===selectedId?'active':''}" onclick="selectBriefing('${b.id}')">
+      <div class="brief-item-name">${name || '—'}</div>
+      <div class="brief-item-meta">
+        <div class="status-dot status-${b.status}"></div>
+        <span class="type-pill type-${b.event_type}">${b.event_type === 'casamiento' ? '💍 BODA' : '🌸 XV'}</span>
+        <span class="brief-item-date">${date || ''}</span>
+        <span class="brief-item-date" style="margin-left:auto;opacity:.6">${created}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══ DETAIL ══ */
+function selectBriefing(id) {
+  selectedId = id;
+  editMode = false;
+  const b = allBriefings.find(x => x.id === id);
+  renderDetail(b);
+  renderList(); // update active state
+}
+
+function renderDetail(b) {
+  const isW = b.event_type === 'casamiento';
+  const name = isW ? (b.couple_display || `${b.bride_name||''} & ${b.groom_name||''}`) : (b.girl_display || b.girl_name || '—');
+  const date = isW ? b.event_date : b.party_date;
+  const created = new Date(b.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'});
+
+  const panel = document.getElementById('detailPanel');
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div>
+        <div class="detail-name">${name}</div>
+        <div class="detail-sub">${isW ? 'CASAMIENTO' : 'QUINCEAÑERA'} · ${date || '—'} · RECIBIDO ${created}</div>
+      </div>
+      <div class="detail-actions">
+        <select class="status-select" onchange="updateStatus('${b.id}',this.value)">
+          <option value="nuevo"      ${b.status==='nuevo'?'selected':''}>● Nuevo</option>
+          <option value="en_proceso" ${b.status==='en_proceso'?'selected':''}>● En proceso</option>
+          <option value="completado" ${b.status==='completado'?'selected':''}>● Completado</option>
+          <option value="pausado"    ${b.status==='pausado'?'selected':''}>● Pausado</option>
+        </select>
+        <button class="header-btn ${editMode?'primary':''}" onclick="toggleEdit('${b.id}')">${editMode?'GUARDAR ✓':'EDITAR'}</button>
+        <button class="header-btn" onclick="copyPrompt('${b.id}')">COPIAR PROMPT</button>
+        <button class="header-btn" onclick="deleteBriefing('${b.id}')" style="color:var(--red);border-color:rgba(196,128,128,.25);">ELIMINAR</button>
+      </div>
+    </div>
+
+    <!-- CONTACTO -->
+    ${section('CONTACTO', [
+      { k:'Nombre', v: b.contact_name },
+      { k:'Email',  v: b.contact_email },
+      { k:'WhatsApp', v: b.contact_phone },
+    ], b, ['contact_name','contact_email','contact_phone'])}
+
+    <!-- EVENTO -->
+    ${isW ? section('LA PAREJA & EL EVENTO', [
+      { k:'Novia', v: b.bride_name },
+      { k:'Novio', v: b.groom_name },
+      { k:'Firma invitación', v: b.couple_display },
+      { k:'Iniciales sello', v: b.initials },
+      { k:'Fecha', v: b.event_date },
+      { k:'Hora', v: b.event_time },
+      { k:'Ceremonia', v: b.ceremony_venue },
+      { k:'Dirección ceremonia', v: b.ceremony_address },
+      { k:'Salón', v: b.reception_venue },
+      { k:'Dirección salón', v: b.reception_address },
+      { k:'Ciudad / País', v: b.city_country },
+      { k:'Dress code', v: b.dress_code },
+    ], b, ['bride_name','groom_name','couple_display','initials','event_date','event_time','ceremony_venue','ceremony_address','reception_venue','reception_address','city_country','dress_code'])
+    : section('LA FESTEJADA & EL EVENTO', [
+      { k:'Nombre', v: b.girl_name },
+      { k:'Título invitación', v: b.girl_display },
+      { k:'Fecha', v: b.party_date },
+      { k:'Hora', v: b.party_time },
+      { k:'Salón', v: b.party_venue },
+      { k:'Dirección', v: b.party_address },
+      { k:'Ciudad', v: b.party_city },
+    ], b, ['girl_name','girl_display','party_date','party_time','party_venue','party_address','party_city'])}
+
+    <!-- ESTÉTICA -->
+    ${section('ESTÉTICA', [
+      { k:'Tema', v: b.theme_code ? `Tema ${b.theme_code}` : null },
+      { k:'Ajustes', v: b.theme_notes, full: true },
+      { k:'Música', v: b.music_url },
+      ...(b.event_type==='quinceanera' ? [
+        { k:'Estilo fiesta', v: b.theme_style },
+        { k:'Paleta de colores', v: b.color_palette },
+      ] : []),
+    ], b, ['theme_code','theme_notes','music_url','theme_style','color_palette'])}
+
+    ${isW ? section('HISTORIA', [
+      { k:'Cómo se conocieron', v: b.story_met, full: true },
+      { k:'Primera cita', v: b.story_first_date, full: true },
+      { k:'La propuesta', v: b.story_proposal, full: true },
+    ], b, ['story_met','story_first_date','story_proposal']) : ''}
+
+    ${isW ? section('MESAS', [
+      { k:'Cantidad de mesas', v: b.tables_count },
+      { k:'Capacidad por mesa', v: b.tables_capacity },
+      { k:'Mesa de honor', v: b.tables_honor ? 'Sí' : 'No' },
+      { k:'Nombres/números', v: b.tables_names, full: true },
+    ], b, ['tables_count','tables_capacity','tables_honor','tables_names']) : ''}
+
+    ${isW && b.trivia?.length ? renderTrivia(b.trivia) : ''}
+
+    ${b.event_type === 'quinceanera' ? section('DETALLES FIESTA', [
+      { k:'Canción del vals', v: b.waltz_song },
+      { k:'Baile sorpresa', v: b.surprise_dance },
+      { k:'Chambelanes', v: b.vals_chambelanes },
+      { k:'Menú', v: b.menu_options },
+      { k:'Notas XV', v: b.quince_notes, full: true },
+    ], b, ['waltz_song','surprise_dance','vals_chambelanes','menu_options','quince_notes']) : ''}
+
+    ${section('TÉCNICO', [
+      { k:'URL', v: b.site_url },
+      { k:'Invitados aprox.', v: b.guests_count },
+      { k:'RSVP', v: b.wants_rsvp ? 'Sí' : 'No' },
+      { k:'Dashboard', v: b.wants_dashboard ? 'Sí' : 'No' },
+      { k:'País', v: b.country },
+    ], b, ['site_url','guests_count','wants_rsvp','wants_dashboard','country'])}
+
+    <!-- NOTAS ADMIN -->
+    <div class="detail-section">
+      <div class="section-title">NOTAS INTERNAS</div>
+      <textarea class="admin-notes" id="adminNotes" placeholder="Notas internas, estado del proyecto, pendientes..." onblur="saveNotes('${b.id}')">${b.admin_notes||''}</textarea>
+    </div>
+  `;
+}
+
+function section(title, fields, b, editFields = []) {
+  const cols = fields.filter(f => !f.full).length;
+  return `<div class="detail-section">
+    <div class="section-title">${title}</div>
+    <div class="field-grid">
+      ${fields.map(f => {
+        const id = `ef_${f.k.replace(/\W/g,'_')}`;
+        const val = f.v != null && f.v !== '' ? f.v : null;
+        if (editMode) {
+          return `<div class="field-item field-edit" ${f.full ? 'style="grid-column:1/-1"' : ''}>
+            <div class="field-key">${f.k}</div>
+            ${f.full
+              ? `<textarea id="${id}" data-field="${editFields[fields.indexOf(f)]||''}">${val||''}</textarea>`
+              : `<input type="text" id="${id}" value="${val||''}" data-field="${editFields[fields.indexOf(f)]||''}">`
+            }
+          </div>`;
+        }
+        return `<div class="field-item" ${f.full ? 'style="grid-column:1/-1"' : ''}>
+          <div class="field-key">${f.k}</div>
+          <div class="field-val ${!val?'empty':''}">${val || '—'}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function renderTrivia(trivia) {
+  if (!trivia?.length) return '';
+  return `<div class="detail-section">
+    <div class="section-title">TRIVIA</div>
+    ${trivia.map((t,i) => `
+      <div class="trivia-row">
+        <div class="trivia-n">${i+1}</div>
+        <div>
+          <div class="trivia-q">${t.q || '—'}</div>
+          ${t.a ? `<div class="trivia-opts">
+            a) ${t.a} · b) ${t.b} · c) ${t.c} · d) ${t.d} · <span class="trivia-ans">✓ ${t.ans||'a'}</span>
+          </div>` : ''}
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ══ EDIT / SAVE ══ */
+function toggleEdit(id) {
+  if (editMode) {
+    saveEdits(id);
+  } else {
+    editMode = true;
+    const b = allBriefings.find(x => x.id === id);
+    renderDetail(b);
+  }
+}
+
+async function saveEdits(id) {
+  const updates = {};
+  document.querySelectorAll('[data-field]').forEach(el => {
+    const field = el.getAttribute('data-field');
+    if (field) updates[field] = el.value;
+  });
+  try {
+    await sbFetch(`briefings?id=eq.${id}`, { method:'PATCH', body: JSON.stringify(updates), prefer:'return=minimal' });
+    const idx = allBriefings.findIndex(b => b.id === id);
+    if (idx >= 0) allBriefings[idx] = { ...allBriefings[idx], ...updates };
+    editMode = false;
+    const b = allBriefings.find(x => x.id === id);
+    renderDetail(b);
+    renderList();
+    showToast('✓ Cambios guardados');
+  } catch(e) { showToast('Error al guardar: ' + e.message, true); }
+}
+
+async function updateStatus(id, status) {
+  try {
+    await sbFetch(`briefings?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({status}), prefer:'return=minimal' });
+    const idx = allBriefings.findIndex(b => b.id === id);
+    if (idx >= 0) allBriefings[idx].status = status;
+    renderList();
+    showToast('✓ Estado actualizado');
+  } catch(e) { showToast('Error: ' + e.message, true); }
+}
+
+async function saveNotes(id) {
+  const notes = document.getElementById('adminNotes')?.value;
+  if (notes === undefined) return;
+  try {
+    await sbFetch(`briefings?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({admin_notes:notes}), prefer:'return=minimal' });
+    const idx = allBriefings.findIndex(b => b.id === id);
+    if (idx >= 0) allBriefings[idx].admin_notes = notes;
+  } catch(e) { showToast('Error al guardar nota', true); }
+}
+
+async function deleteBriefing(id) {
+  if (!confirm('¿Seguro que querés eliminar este briefing? Esta acción no se puede deshacer.')) return;
+  try {
+    await sbFetch(`briefings?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' });
+    allBriefings = allBriefings.filter(b => b.id !== id);
+    selectedId = null;
+    renderList();
+    document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">← Seleccioná un briefing para ver los detalles</div>';
+    showToast('✓ Briefing eliminado');
+  } catch(e) { showToast('Error: ' + e.message, true); }
+}
+
+/* ══ COPIAR PROMPT ══ */
+function copyPrompt(id) {
+  const b = allBriefings.find(x => x.id === id);
+  if (!b) return;
+  const isW = b.event_type === 'casamiento';
+
+  let prompt = `Generá un sistema completo de invitación digital de ${isW ? 'casamiento' : 'quinceañera'} con los siguientes datos.
+Producí los 4 archivos (index.html, dashboard.html, mesas.html, trivia.html) listos para usar.
+
+═══════════════════════════════════
+TIPO DE EVENTO: ${isW ? 'CASAMIENTO' : 'QUINCEAÑERA'}
+═══════════════════════════════════
+`;
+
+  if (isW) {
+    prompt += `
+PAREJA
+  Novia:         ${b.bride_name||''}
+  Novio:         ${b.groom_name||''}
+  Nombre corto:  ${b.couple_display||''}
+  Iniciales:     ${b.initials||''}
+
+EVENTO
+  Fecha:         ${b.event_date||''}
+  Hora:          ${b.event_time||''}
+  Ceremonia:     ${b.ceremony_venue||''}
+  Dir. ceremonia:${b.ceremony_address||''}
+  Recepción:     ${b.reception_venue||''}
+  Dir. recepción:${b.reception_address||''}
+  Ciudad/País:   ${b.city_country||''}
+  Dress code:    ${b.dress_code||''}
+
+ESTÉTICA
+  Tema:          ${b.theme_code ? 'Tema '+b.theme_code : ''}
+  Ajustes:       ${b.theme_notes||''}
+  Música:        ${b.music_url||''}
+
+HISTORIA
+  Se conocieron: ${b.story_met||''}
+  Primera cita:  ${b.story_first_date||''}
+  Propuesta:     ${b.story_proposal||''}
+
+MESAS
+  Cantidad:      ${b.tables_count||''}
+  Capacidad:     ${b.tables_capacity||''}
+  Mesa honor:    ${b.tables_honor ? 'Sí' : 'No'}
+  Nombres:       ${b.tables_names||''}
+`;
+    if (b.trivia?.length) {
+      prompt += '\nTRIVIA\n';
+      b.trivia.forEach((t,i) => {
+        prompt += `  P${i+1}: ${t.q} | a) ${t.a} | b) ${t.b} | c) ${t.c} | d) ${t.d} | Correcta: ${t.ans}\n`;
+      });
+    }
+  } else {
+    prompt += `
+FESTEJADA
+  Nombre:        ${b.girl_name||''}
+  Título:        ${b.girl_display||''}
+
+EVENTO
+  Fecha:         ${b.party_date||''}
+  Hora:          ${b.party_time||''}
+  Salón:         ${b.party_venue||''}
+  Dirección:     ${b.party_address||''}
+  Ciudad:        ${b.party_city||''}
+
+ESTÉTICA
+  Tema visual:   ${b.theme_code ? 'Tema '+b.theme_code : ''}
+  Estilo fiesta: ${b.theme_style||''}
+  Paleta:        ${b.color_palette||''}
+  Música:        ${b.music_url||''}
+  Referencias:   ${b.theme_notes||''}
+
+FIESTA
+  Vals:          ${b.waltz_song||''}
+  Sorpresa:      ${b.surprise_dance||''}
+  Chambelanes:   ${b.vals_chambelanes||''}
+  Menú:          ${b.menu_options||''}
+  Notas:         ${b.quince_notes||''}
+`;
+  }
+
+  prompt += `
+TÉCNICO
+  URL:           ${b.site_url||'https://casamiento.com'}
+  Invitados:     ${b.guests_count||''}
+  RSVP:          ${b.wants_rsvp ? 'Sí' : 'No'}
+  Dashboard:     ${b.wants_dashboard ? 'Sí' : 'No'}
+  País:          ${b.country||'Argentina'}
+
+NOTAS ADICIONALES
+  ${b.extra_notes||'—'}
+═══════════════════════════════════`;
+
+  navigator.clipboard?.writeText(prompt).then(() => showToast('✓ Prompt copiado — pegalo en Claude'));
+}
+
+/* ══ EXPORT CSV ══ */
+function exportCSV() {
+  const cols = ['id','created_at','event_type','status','contact_name','contact_email',
+    'couple_display','girl_display','event_date','party_date','guests_count','site_url'];
+  const rows = [cols.join(',')];
+  allBriefings.forEach(b => {
+    rows.push(cols.map(c => `"${(b[c]||'').toString().replace(/"/g,'""')}"`).join(','));
+  });
+  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `briefings_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+/* ══ TOAST ══ */
+let toastT;
+function showToast(msg, error=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (error?' error':'');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bether Studio · Briefing de Evento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══════════════════════════════════ */
+:root{
+  --bg:        #0d0a14;
+  --bg-2:      #140e1e;
+  --surface:   rgba(255,255,255,.045);
+  --surface-2: rgba(255,255,255,.07);
+  --border:    rgba(255,255,255,.09);
+  --border-2:  rgba(255,255,255,.16);
+
+  --v1: #b66fff;   /* violeta */
+  --v2: #7c3aff;
+  --p1: #ff6bb0;   /* rosa */
+  --p2: #ff3e8a;
+  --c1: #00e5c0;   /* cyan */
+  --c2: #00bfa5;
+  --o1: #ff9d4d;   /* naranja */
+  --o2: #ff6b1a;
+
+  --text:   #f0eaf8;
+  --text-2: rgba(240,234,248,.6);
+  --text-3: rgba(240,234,248,.35);
+
+  --serif:  'Instrument Serif',Georgia,serif;
+  --sans:   'DM Sans','Helvetica Neue',sans-serif;
+  --display:'Syne',sans-serif;
+  --script: 'Pinyon Script',cursive;
+  --ease:   cubic-bezier(.22,1,.36,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100svh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:inherit;}
+
+/* ══ BG ESPECTACULAR ════════════════════════ */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;}
+
+/* Capa 1 — Mesh principal lento */
+.bg-mesh{
+  position:absolute;inset:-50%;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,58,255,.28),transparent 58%),
+    radial-gradient(ellipse 55% 65% at 80% 10%, rgba(255,107,176,.22),transparent 55%),
+    radial-gradient(ellipse 70% 45% at 60% 80%, rgba(0,229,192,.18),transparent 55%),
+    radial-gradient(ellipse 45% 55% at 10% 75%, rgba(255,157,77,.2),transparent 50%),
+    radial-gradient(ellipse 80% 80% at 50% 50%, rgba(182,111,255,.1),transparent 68%);
+  animation:meshMove 18s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes meshMove{
+  0%  {transform:translate(0,0)    rotate(0deg)  scale(1);}
+  25% {transform:translate(3%,4%)  rotate(4deg)  scale(1.06);}
+  50% {transform:translate(-3%,2%) rotate(-3deg) scale(1.1);}
+  75% {transform:translate(2%,-3%) rotate(5deg)  scale(1.05);}
+  100%{transform:translate(-1%,2%) rotate(-2deg) scale(1.08);}
+}
+
+/* Capa 2 — Orbs independientes con movimientos propios */
+.bg-orb{
+  position:absolute;border-radius:50%;filter:blur(70px);
+  will-change:transform;animation:var(--anim) var(--dur) ease-in-out infinite alternate;
+  animation-delay:var(--delay,0s);
+}
+.orb-a{
+  width:55vw;height:55vw;max-width:600px;max-height:600px;
+  top:-15%;left:-10%;
+  background:radial-gradient(circle,rgba(124,58,255,.35),transparent 70%);
+  --dur:14s;--anim:orbA;
+}
+.orb-b{
+  width:50vw;height:50vw;max-width:550px;max-height:550px;
+  top:20%;right:-15%;
+  background:radial-gradient(circle,rgba(255,62,138,.3),transparent 70%);
+  --dur:17s;--delay:-5s;--anim:orbB;
+}
+.orb-c{
+  width:45vw;height:45vw;max-width:480px;max-height:480px;
+  bottom:-10%;left:20%;
+  background:radial-gradient(circle,rgba(0,229,192,.22),transparent 70%);
+  --dur:21s;--delay:-9s;--anim:orbC;
+}
+.orb-d{
+  width:35vw;height:35vw;max-width:380px;max-height:380px;
+  top:50%;right:5%;
+  background:radial-gradient(circle,rgba(255,157,77,.2),transparent 70%);
+  --dur:13s;--delay:-3s;--anim:orbD;
+}
+.orb-e{
+  width:30vw;height:30vw;max-width:320px;max-height:320px;
+  top:10%;left:40%;
+  background:radial-gradient(circle,rgba(255,107,176,.18),transparent 70%);
+  --dur:16s;--delay:-7s;--anim:orbE;
+}
+@keyframes orbA{
+  0%  {transform:translate(0,0)    scale(1);}
+  50% {transform:translate(8%,12%) scale(1.15);}
+  100%{transform:translate(5%,-8%) scale(0.9);}
+}
+@keyframes orbB{
+  0%  {transform:translate(0,0)     scale(1);}
+  50% {transform:translate(-10%,8%) scale(1.2);}
+  100%{transform:translate(-5%,15%) scale(0.95);}
+}
+@keyframes orbC{
+  0%  {transform:translate(0,0)    scale(1);}
+  50% {transform:translate(6%,-10%)scale(1.1);}
+  100%{transform:translate(-8%,5%) scale(1.18);}
+}
+@keyframes orbD{
+  0%  {transform:translate(0,0)    rotate(0)   scale(1);}
+  50% {transform:translate(-12%,5%)rotate(20deg)scale(1.25);}
+  100%{transform:translate(6%,12%) rotate(-10deg)scale(0.88);}
+}
+@keyframes orbE{
+  0%  {transform:translate(0,0)    scale(1);}
+  33% {transform:translate(-8%,10%)scale(1.3);}
+  66% {transform:translate(10%,5%) scale(0.85);}
+  100%{transform:translate(-4%,-8%)scale(1.1);}
+}
+
+/* Capa 3 — Grid de líneas con movimiento propio */
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.032) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.032) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+  animation:gridShift 25s linear infinite;
+}
+@keyframes gridShift{
+  0%  {background-position:0 0;}
+  100%{background-position:60px 60px;}
+}
+
+/* Capa 4 — Vignette */
+.bg-vig{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 75% at 50% 30%,transparent 35%,rgba(13,10,20,.75) 100%);
+}
+
+/* Capa 5 — Partículas flotantes */
+.bg-particles{position:absolute;inset:0;pointer-events:none;}
+.particle{
+  position:absolute;border-radius:50%;
+  animation:particleFloat var(--d) ease-in-out infinite;
+  animation-delay:var(--delay);opacity:0;
+}
+@keyframes particleFloat{
+  0%  {transform:translateY(105vh) translateX(0)        scale(0);  opacity:0;}
+  8%  {opacity:1;}
+  85% {opacity:.7;}
+  100%{transform:translateY(-15vh) translateX(var(--dx)) scale(1.3);opacity:0;}
+}
+
+/* Capa 6 — Scanlines sutiles */
+.bg-scan{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,
+    rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px
+  );
+  animation:scanDrift 8s linear infinite;
+}
+@keyframes scanDrift{0%{background-position:0 0;}100%{background-position:0 40px;}}
+
+/* Capa 7 — Noise */
+.bg-noise{
+  position:absolute;inset:0;opacity:.045;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ══ LAYOUT ═════════════════════════════════ */
+.wrap{
+  position:relative;z-index:1;
+  max-width:760px;margin:0 auto;
+  padding:2rem 1.2rem 8rem;
+}
+
+/* ══ INTRO SPLASH ═══════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:500;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;
+  background:var(--bg);
+  transition:opacity .8s var(--ease),transform .8s var(--ease);
+}
+#splash.out{opacity:0;transform:scale(1.06);pointer-events:none;}
+.splash-logo{
+  font-family:var(--script);font-size:clamp(3rem,10vw,6rem);
+  background:linear-gradient(135deg,var(--v1),var(--p1),var(--c1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:logoReveal 1.2s var(--ease) .3s both;
+  line-height:1;
+}
+.splash-studio{
+  font-family:var(--display);font-size:.9rem;font-weight:800;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--text-3);margin-top:-.2rem;
+  animation:fadeUp .8s var(--ease) .6s both;
+}
+@keyframes logoReveal{
+  from{opacity:0;transform:translateY(20px) scale(.95);}
+  to{opacity:1;transform:none;}
+}
+.splash-tagline{
+  font-family:var(--display);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--text-3);
+  animation:fadeUp .8s var(--ease) .9s both;
+}
+.splash-bar{
+  width:120px;height:2px;border-radius:2px;overflow:hidden;
+  background:rgba(255,255,255,.1);margin-top:.5rem;
+}
+.splash-bar-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--v1),var(--p1),var(--c1));
+  animation:barFill 1.8s var(--ease) .4s forwards;
+}
+@keyframes barFill{to{width:100%;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* ══ HEADER ═════════════════════════════════ */
+.site-header{
+  text-align:center;
+  padding:2.5rem 0 2rem;
+  animation:fadeUp .8s var(--ease) both;
+}
+.header-logo{
+  font-family:var(--script);font-size:clamp(2.4rem,7vw,4rem);line-height:1;
+  background:linear-gradient(135deg,var(--v1) 0%,var(--p1) 50%,var(--c1) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:inline-block;
+  filter:drop-shadow(0 0 30px rgba(182,111,255,.35));
+}
+.header-studio{
+  font-family:var(--display);font-size:.7rem;font-weight:800;letter-spacing:.4em;
+  text-transform:uppercase;color:var(--text-3);display:block;margin-top:-.1rem;
+}
+.header-sub{
+  font-family:var(--display);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--text-3);margin-top:.5rem;
+}
+.header-rule{
+  width:80px;height:1px;margin:.9rem auto 0;
+  background:linear-gradient(90deg,transparent,var(--v1),var(--p1),transparent);
+  opacity:.6;
+}
+
+/* ══ PROGRESS ═══════════════════════════════ */
+.progress-wrap{
+  margin-bottom:2.2rem;
+  animation:fadeUp .6s var(--ease) .1s both;
+}
+.progress-steps{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;
+}
+.progress-step{display:flex;flex-direction:column;align-items:center;gap:.3rem;}
+.step-circle{
+  width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:.72rem;font-weight:700;
+  color:var(--text-3);background:var(--surface);
+  transition:all .4s var(--spring);position:relative;z-index:1;
+}
+.step-circle.active{
+  border-color:var(--v1);color:var(--v1);
+  background:rgba(182,111,255,.12);
+  box-shadow:0 0 0 5px rgba(182,111,255,.1),0 0 20px rgba(182,111,255,.25);
+}
+.step-circle.done{
+  border-color:var(--c1);background:rgba(0,229,192,.15);color:var(--c1);
+  box-shadow:0 0 12px rgba(0,229,192,.2);
+}
+.step-label{font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-3);white-space:nowrap;transition:color .3s;}
+.progress-step.active .step-label{color:rgba(182,111,255,.8);}
+.progress-step.done .step-label{color:rgba(0,229,192,.7);}
+.step-line{
+  flex:0 0 clamp(10px,2.5vw,36px);height:1.5px;
+  background:var(--border);margin-bottom:1.1rem;border-radius:2px;
+  transition:background .5s;
+}
+.step-line.done{background:linear-gradient(90deg,var(--c1),var(--v1));}
+
+/* ══ CARDS ══════════════════════════════════ */
+.form-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:20px;padding:2rem;margin-bottom:1rem;
+  backdrop-filter:blur(20px);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.07);
+  opacity:0;transform:translateY(20px);
+  transition:all .5s var(--ease);
+  position:relative;overflow:hidden;
+}
+/* Shimmer line top */
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(182,111,255,.5) 30%,rgba(255,107,176,.5) 60%,transparent 100%);
+  opacity:0;transition:opacity .4s;
+}
+.form-card:hover::before{opacity:1;}
+.form-card.vis{opacity:1;transform:translateY(0);}
+
+.card-eyebrow{
+  font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--v1);margin-bottom:.3rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.card-eyebrow::before{
+  content:'';width:16px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--v1),var(--p1));
+}
+.card-title{
+  font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.7rem);font-style:italic;
+  color:var(--text);margin-bottom:.3rem;line-height:1.2;
+}
+.card-subtitle{font-size:.88rem;color:var(--text-2);line-height:1.65;margin-bottom:1.4rem;}
+.card-rule{height:1px;background:var(--border);margin-bottom:1.4rem;
+  background:linear-gradient(90deg,var(--border-2),transparent);}
+
+/* ══ FORM ELEMENTS ══════════════════════════ */
+.field{margin-bottom:1.1rem;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+@media(max-width:540px){.field-row{grid-template-columns:1fr;}}
+
+label{
+  display:block;font-family:var(--display);font-size:.68rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:.4rem;transition:color .2s;
+}
+.field:focus-within label{color:var(--v1);}
+label .hint{font-weight:400;text-transform:none;letter-spacing:0;
+  color:var(--text-3);font-size:.72rem;font-family:var(--sans);}
+
+input[type=text],input[type=email],input[type=tel],input[type=url],
+input[type=number],textarea,select{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:.7rem 1rem;
+  color:var(--text);font-size:.92rem;
+  outline:none;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--v1);
+  background:rgba(182,111,255,.07);
+  box-shadow:0 0 0 3px rgba(182,111,255,.12),0 4px 16px rgba(182,111,255,.1);
+}
+input::placeholder,textarea::placeholder{color:var(--text-3);}
+textarea{resize:vertical;min-height:90px;line-height:1.65;}
+select{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path d='M0 0L5 6L10 0' fill='none' stroke='rgba(182,111,255,.6)' stroke-width='1.5' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right .85rem center;background-size:9px;
+  padding-right:2.4rem;
+}
+select option{background:#1a1228;color:var(--text);}
+
+/* ══ EVENT SELECTOR ════════════════════════ */
+.event-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+  gap:.7rem;margin-bottom:1.6rem;
+}
+.event-opt{
+  position:relative;border:1.5px solid var(--border);border-radius:14px;
+  padding:1.2rem .9rem;text-align:center;
+  transition:all .3s var(--spring);
+  background:var(--surface);
+  overflow:hidden;
+}
+/* Glow bg on hover */
+.event-opt::after{
+  content:'';position:absolute;inset:0;border-radius:14px;
+  background:radial-gradient(circle at 50% 50%,rgba(182,111,255,.15),transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.event-opt:hover{border-color:var(--v1);transform:translateY(-3px);
+  box-shadow:0 8px 32px rgba(182,111,255,.18);}
+.event-opt:hover::after{opacity:1;}
+.event-opt.selected{
+  border-color:var(--v1);
+  background:rgba(182,111,255,.1);
+  box-shadow:0 0 0 3px rgba(182,111,255,.15),0 8px 32px rgba(182,111,255,.2);
+  transform:translateY(-2px) scale(1.02);
+}
+.event-opt.selected::after{opacity:1;}
+.event-opt input{position:absolute;opacity:0;pointer-events:none;}
+
+/* ── ICON 3D ── */
+.event-icon{
+  font-size:2.2rem;margin-bottom:.5rem;display:block;
+  position:relative;
+  /* Esfera 3D con sombra y perspectiva */
+  filter:
+    drop-shadow(0 6px 8px rgba(0,0,0,.45))
+    drop-shadow(0 2px 2px rgba(0,0,0,.3));
+  transform-style:preserve-3d;
+  animation:iconFloat var(--fi,3s) ease-in-out infinite alternate;
+  transition:filter .3s;
+}
+/* Cada card tiene su tiempo de float distinto (asignado por JS) */
+@keyframes iconFloat{
+  0%  {transform:translateY(0)   rotateY(0deg)   scale(1);}
+  50% {transform:translateY(-4px) rotateY(10deg)  scale(1.04);}
+  100%{transform:translateY(-6px) rotateY(-8deg)  scale(1.06);}
+}
+.event-opt:hover .event-icon{
+  filter:
+    drop-shadow(0 0 14px rgba(182,111,255,.7))
+    drop-shadow(0 8px 12px rgba(0,0,0,.5));
+  animation:iconSpin .5s var(--spring) forwards;
+}
+@keyframes iconSpin{
+  0%  {transform:scale(1) rotateY(0deg);}
+  40% {transform:scale(1.3) rotateY(180deg);}
+  70% {transform:scale(1.2) rotateY(300deg);}
+  100%{transform:scale(1.18) rotateY(360deg) translateY(-4px);}
+}
+.event-opt.selected .event-icon{
+  filter:
+    drop-shadow(0 0 18px rgba(182,111,255,.9))
+    drop-shadow(0 0 8px rgba(255,107,176,.5))
+    drop-shadow(0 10px 14px rgba(0,0,0,.5));
+  animation:iconPulse 1.4s ease-in-out infinite alternate;
+}
+@keyframes iconPulse{
+  0%  {transform:scale(1.15) translateY(-3px) rotate(-3deg);}
+  100%{transform:scale(1.22) translateY(-6px) rotate(3deg);}
+}
+
+.event-name{font-family:var(--display);font-size:.68rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--text);}
+.event-sub{font-size:.68rem;color:var(--text-3);margin-top:.2rem;line-height:1.4;}
+/* Check badge */
+.event-check{
+  position:absolute;top:.5rem;right:.5rem;
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--v1),var(--p1));
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(182,111,255,.4);
+  animation:checkPop .35s var(--spring);
+}
+@keyframes checkPop{
+  0%{transform:scale(0) rotate(-180deg);}
+  70%{transform:scale(1.2) rotate(10deg);}
+  100%{transform:scale(1) rotate(0deg);}
+}
+.event-opt.selected .event-check{display:flex;}
+.event-check::after{content:'✓';font-size:.58rem;color:white;font-weight:800;}
+
+/* Spark effect on select */
+.spark{
+  position:absolute;pointer-events:none;border-radius:50%;
+  animation:sparkBurst .5s var(--ease) forwards;
+}
+@keyframes sparkBurst{
+  0%{width:0;height:0;opacity:1;}
+  100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%);}
+}
+
+/* ══ CONTACT SECTION ════════════════════════ */
+.contact-section{
+  background:rgba(182,111,255,.05);
+  border:1px solid rgba(182,111,255,.15);
+  border-radius:14px;padding:1.3rem 1.2rem;margin-top:1.3rem;
+}
+.section-label{
+  font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--v1);margin-bottom:1rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(182,111,255,.2);}
+
+/* ══ THEME GRID ══════════════════════════════ */
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(134px,1fr));gap:.6rem;margin-top:.6rem;}
+.theme-card{
+  border:1.5px solid var(--border);border-radius:12px;overflow:hidden;
+  transition:all .28s var(--spring);position:relative;
+  background:var(--surface);
+}
+.theme-card:hover{border-color:var(--v1);transform:translateY(-3px) scale(1.02);
+  box-shadow:0 8px 28px rgba(182,111,255,.2);}
+.theme-card.selected{
+  border-color:var(--p1);
+  box-shadow:0 0 0 3px rgba(255,107,176,.18),0 8px 28px rgba(255,107,176,.15);
+  transform:scale(1.03);
+}
+.theme-card input{position:absolute;opacity:0;pointer-events:none;}
+.theme-swatch{height:46px;position:relative;}
+.theme-swatch::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:50%;
+  background:linear-gradient(to top,rgba(0,0,0,.3),transparent);
+}
+.theme-info{padding:.5rem .6rem;background:rgba(0,0,0,.2);}
+.theme-num{font-family:var(--display);font-size:.58rem;font-weight:700;color:var(--text-3);
+  letter-spacing:.08em;text-transform:uppercase;}
+.theme-name{font-family:var(--serif);font-size:.82rem;font-style:italic;color:var(--text);}
+.theme-desc{font-size:.63rem;color:var(--text-3);margin-top:.1rem;line-height:1.35;}
+.theme-tick{
+  position:absolute;top:.4rem;right:.4rem;width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--p1),var(--v1));
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(255,107,176,.4);
+}
+.theme-card.selected .theme-tick{display:flex;}
+.theme-tick::after{content:'✓';font-size:.58rem;color:white;font-weight:800;}
+
+/* ══ TRIVIA ══════════════════════════════════ */
+.trivia-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
+.trivia-table{width:100%;border-collapse:collapse;min-width:460px;}
+.trivia-table th{
+  font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3);
+  padding:.6rem .7rem;border-bottom:1px solid var(--border);
+  background:rgba(182,111,255,.06);text-align:left;
+}
+.trivia-table td{padding:.35rem .4rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.trivia-table tr:last-child td{border-bottom:none;}
+.trivia-table tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+.trivia-num{
+  font-family:var(--display);font-size:.68rem;font-weight:800;
+  background:linear-gradient(135deg,var(--v1),var(--p1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  width:28px;text-align:center;
+}
+.t-input{
+  background:transparent;border:none;border-bottom:1px solid var(--border);
+  border-radius:0;padding:.32rem .4rem;color:var(--text);font-size:.84rem;
+  width:100%;transition:border-color .2s,background .2s;
+}
+.t-input:focus{border-color:var(--v1);outline:none;background:rgba(182,111,255,.05);}
+.t-ans select{
+  background:rgba(182,111,255,.08);border:1px solid rgba(182,111,255,.25);
+  border-radius:6px;padding:.28rem .5rem;
+  color:var(--v1);font-family:var(--display);font-size:.72rem;font-weight:700;
+  width:66px;background-image:none;cursor:pointer;
+}
+
+/* ══ BUTTONS ══════════════════════════════════ */
+.btn-row{display:flex;gap:.7rem;justify-content:flex-end;margin-top:1.6rem;flex-wrap:wrap;}
+
+.btn{
+  font-family:var(--display);font-size:.72rem;font-weight:700;letter-spacing:.06em;
+  padding:.75rem 1.8rem;border-radius:10px;
+  border:1.5px solid var(--border);
+  transition:all .28s var(--spring);
+  position:relative;overflow:hidden;
+}
+/* Shine sweep on hover */
+.btn::after{
+  content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  transition:left .4s;
+}
+.btn:hover::after{left:150%;}
+
+.btn-ghost{
+  background:transparent;color:var(--text-2);
+}
+.btn-ghost:hover{
+  color:var(--text);border-color:var(--border-2);
+  background:var(--surface-2);transform:translateY(-1px);
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--v2) 0%,var(--v1) 50%,var(--p2) 100%);
+  color:white;border-color:transparent;
+  box-shadow:0 4px 20px rgba(124,58,255,.35),0 1px 0 rgba(255,255,255,.15) inset;
+}
+.btn-primary:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 8px 32px rgba(124,58,255,.45),0 1px 0 rgba(255,255,255,.15) inset;
+}
+.btn-primary:active{transform:scale(.98);}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* Ripple effect */
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.25);
+  transform:scale(0);animation:ripple .5s linear;
+  pointer-events:none;
+}
+@keyframes ripple{to{transform:scale(4);opacity:0;}}
+
+/* ══ SUCCESS ══════════════════════════════════ */
+#successScreen{display:none;text-align:center;padding:5rem 2rem;}
+#successScreen.vis{display:block;animation:fadeUp .7s var(--ease);}
+.success-ring{
+  width:100px;height:100px;border-radius:50%;margin:0 auto 1.5rem;
+  background:linear-gradient(135deg,var(--v1),var(--p1),var(--c1));
+  display:flex;align-items:center;justify-content:center;font-size:2.5rem;
+  box-shadow:0 0 60px rgba(182,111,255,.4),0 0 120px rgba(182,111,255,.15);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 60px rgba(182,111,255,.4),0 0 120px rgba(182,111,255,.15);}
+  50%{box-shadow:0 0 80px rgba(182,111,255,.6),0 0 160px rgba(182,111,255,.25);}
+}
+.success-title{
+  font-family:var(--script);font-size:clamp(2rem,6vw,3.4rem);
+  background:linear-gradient(135deg,var(--v1),var(--p1),var(--c1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.6rem;
+}
+.success-msg{font-size:.95rem;color:var(--text-2);line-height:1.8;max-width:440px;margin:0 auto;}
+
+/* ══ TOAST ══════════════════════════════════ */
+.toast{
+  position:fixed;bottom:2rem;left:50%;
+  transform:translateX(-50%) translateY(14px);
+  z-index:900;
+  background:rgba(20,14,30,.95);
+  border:1px solid var(--v1);
+  border-radius:10px;padding:.65rem 1.4rem;
+  font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.06em;
+  color:var(--text);opacity:0;transition:all .3s var(--ease);
+  pointer-events:none;white-space:nowrap;
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 32px rgba(182,111,255,.2);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.error{border-color:var(--p1);box-shadow:0 8px 32px rgba(255,107,176,.2);}
+
+@media(max-width:480px){
+  .form-card{padding:1.4rem 1.1rem;border-radius:14px;}
+  .event-grid{grid-template-columns:repeat(3,1fr);}
+  .btn-row{justify-content:stretch;}
+  .btn{flex:1;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">Bether</div>
+  <div class="splash-studio">Studio</div>
+  <div class="splash-tagline">Invitaciones digitales de lujo</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- BG -->
+<div class="bg">
+  <div class="bg-mesh"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
+  <div class="bg-orb orb-d"></div>
+  <div class="bg-orb orb-e"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-vig"></div>
+  <div class="bg-particles" id="bgParticles"></div>
+  <div class="bg-scan"></div>
+  <div class="bg-noise"></div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="wrap" id="mainWrap">
+  <header class="site-header">
+    <div class="header-logo">Bether<span class="header-studio">Studio</span></div>
+    <div class="header-sub">Contanos sobre tu evento y creamos algo increíble</div>
+    <div class="header-rule"></div>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-steps" id="progressSteps"></div>
+  </div>
+
+  <div id="formArea"></div>
+
+  <div id="successScreen">
+    <div class="success-ring">🎉</div>
+    <div class="success-title">¡Brillante! Ya recibimos tu briefing</div>
+    <p class="success-msg">En las próximas <strong style="color:var(--v1)">48 horas</strong> nos ponemos en contacto con un primer avance de tu invitación. ¡Va a ser espectacular!</p>
+    <p class="success-msg" style="margin-top:.8rem;font-size:.82rem;opacity:.55;">Revisá tu correo — te enviamos una copia de tus respuestas.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ CONFIG ══════════════════════════════════ */
+const CONFIG={
+  SUPABASE_URL:      'https://seyalkexqssticszgwkg.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNleWFsa2V4cXNzdGljc3pnd2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzMDIyNjIsImV4cCI6MjA5NDg3ODI2Mn0.a6uc-FSJw1EiMQQFynLZAxYCSbNCYIKupMLjxdvjqL8',
+  RESEND_API_KEY:    're_j3uk3ZaX_NvuAeq9Esbg8xZ5v6M6BpxRy',
+  ADMIN_EMAIL:       'vos@tudominio.com',
+  SITE_NAME:         'Tu Evento Digital',
+};
+
+
+/* ══ PARTÍCULAS ══════════════════════════════ */
+(()=>{
+  const colors=['#b66fff','#ff6bb0','#00e5c0','#ff9d4d','#7c3aff'];
+  const wrap=document.getElementById('bgParticles');
+  for(let i=0;i<28;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const s=Math.random()*4+2;
+    p.style.cssText=`
+      width:${s}px;height:${s}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      --d:${Math.random()*12+8}s;
+      --delay:-${Math.random()*15}s;
+      --dx:${(Math.random()-.5)*120}px;
+      opacity:.5;
+    `;
+    wrap.appendChild(p);
+  }
+})();
+
+/* ══ SPLASH OUT ══════════════════════════════ */
+setTimeout(()=>{
+  document.getElementById('splash').classList.add('out');
+  setTimeout(()=>document.getElementById('splash').remove(),900);
+},2200);
+
+/* ══ RIPPLE EN BOTONES ═══════════════════════ */
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.btn');
+  if(!btn) return;
+  const r=document.createElement('span');
+  r.className='ripple';
+  const rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+  btn.appendChild(r);
+  setTimeout(()=>r.remove(),600);
+});
+
+/* ══ TEMAS ═══════════════════════════════════ */
+const THEMES=[
+  {code:'01',name:'Noir & Or',        bg:'#1A1208',accent:'#C9A84C',desc:'Negro · Dorado · Gala'},
+  {code:'02',name:'Ivoire & Sable',   bg:'#F7F0E6',accent:'#9A7840',desc:'Marfil · Romántico'},
+  {code:'03',name:'Bosque & Plata',   bg:'#0D1A14',accent:'#7EC4A0',desc:'Verde · Naturaleza'},
+  {code:'04',name:'Vino & Oro',       bg:'#3D1228',accent:'#C9A84C',desc:'Burdeos · Dramático'},
+  {code:'05',name:'Lavande & Argent', bg:'#D4CCF0',accent:'#7060B0',desc:'Lavanda · Etéreo'},
+  {code:'06',name:'Nude & Terracotta',bg:'#F5F0EB',accent:'#C07850',desc:'Nude · Moderno'},
+  {code:'07',name:'Nuit & Azur',      bg:'#0E2040',accent:'#88B8E8',desc:'Azul · Celestial'},
+  {code:'08',name:'Poudre & Rose',    bg:'#F0D8DC',accent:'#C87890',desc:'Rosa · Delicado'},
+];
+
+/* ══ EVENTOS ═════════════════════════════════ */
+const EVENTS=[
+  {v:'casamiento', icon:'💍',name:'Casamiento',    sub:'Boda con sobre animado'},
+  {v:'quinceanera',icon:'🌸',name:'Quinceañera',   sub:'XV años'},
+  {v:'cumple_inf', icon:'🎈',name:'Cumple Infantil',sub:'Para los más chicos'},
+  {v:'cumple_adu', icon:'🥂',name:'Cumple Adulto', sub:'Con estilo'},
+  {v:'bautismo',   icon:'🕊️',name:'Bautismo',      sub:'Bienvenida al mundo'},
+  {v:'comunion',   icon:'✝️',name:'Comunión',      sub:'Primera Comunión'},
+  {v:'baby_shower',icon:'🍼',name:'Baby Shower',   sub:'Nuevo integrante'},
+  {v:'corporativo',icon:'🏢',name:'Corporativo',   sub:'Eventos empresariales'},
+  {v:'otro',       icon:'✨',name:'Otro Evento',   sub:'Lo que sea'},
+];
+
+/* ══ FIELD DEFS ══════════════════════════════ */
+const FD={
+  casamiento:[
+    {section:'La Pareja',fields:[
+      {id:'bride_name',  label:'Nombre de la novia',       ph:'Sofía García'},
+      {id:'groom_name',  label:'Nombre del novio',         ph:'Andrés López'},
+      {id:'couple_display',label:'Firma de la invitación', ph:'Sofía & Andrés',hint:'Cómo van a aparecer en el título',wide:true},
+      {id:'initials',    label:'Iniciales para el sello',  ph:'S & A'},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'event_date',       label:'Fecha',                    ph:'15 de noviembre de 2026'},
+      {id:'event_time',       label:'Hora',                     ph:'19:00 hs'},
+      {id:'ceremony_venue',   label:'Lugar de la ceremonia',    ph:'Iglesia Santa Ana',wide:true},
+      {id:'ceremony_address', label:'Dirección de la ceremonia',ph:'Av. Santa Ana 1234, CABA',wide:true},
+      {id:'reception_venue',  label:'Nombre del salón',         ph:'Hacienda Villa Real',wide:true},
+      {id:'reception_address',label:'Dirección del salón',      ph:'Ruta 2 Km 40, Cañuelas',wide:true},
+      {id:'city_country',     label:'Ciudad y país',            ph:'Buenos Aires, Argentina'},
+      {id:'dress_code',       label:'Dress code',               ph:'Formal / Cocktail / Sin restricción'},
+    ]},
+    {section:'Historia',fields:[
+      {id:'story_met',       label:'¿Cómo se conocieron?',     ph:'Nos conocimos en...', ta:true,wide:true,hint:'Podés escribir "INVENTAR" y lo hacemos nosotros'},
+      {id:'story_first_date',label:'¿Cuál fue su primera cita?',ph:'La primera cita fue...',ta:true,wide:true},
+      {id:'story_proposal',  label:'¿Cómo fue la propuesta?', ph:'La propuesta fue...',ta:true,wide:true},
+    ]},
+    {section:'Mesas',fields:[
+      {id:'tables_count',   label:'Cantidad de mesas',    ph:'10',type:'number'},
+      {id:'tables_capacity',label:'Lugares por mesa',     ph:'10',type:'number'},
+      {id:'tables_honor',   label:'¿Mesa de honor?',      sel:['— Elegir —','Sí','No']},
+      {id:'tables_names',   label:'Nombres de las mesas', ph:'Mesa 1, Mesa 2... o Mesa Rosas, Mesa Jazmín...',wide:true},
+    ]},
+    {section:'Trivia',trivia:true},
+  ],
+  quinceanera:[
+    {section:'La Festejada',fields:[
+      {id:'g_name',   label:'Nombre completo',         ph:'Valentina García'},
+      {id:'g_display',label:'Título de la invitación', ph:'Los XV de Valentina',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',   label:'Fecha',          ph:'20 de septiembre de 2026'},
+      {id:'g_time',   label:'Hora',           ph:'20:00 hs'},
+      {id:'g_venue',  label:'Nombre del salón',ph:'Salón Versailles',wide:true},
+      {id:'g_address',label:'Dirección',      ph:'Av. Corrientes 1234',wide:true},
+      {id:'g_city',   label:'Ciudad y país',  ph:'Buenos Aires'},
+    ]},
+    {section:'Detalles de la Fiesta',fields:[
+      {id:'g_theme_style',label:'Estilo',sel:['— Elegir —','Princess','Glamour / Lujo','Boho / Natural','París Romántico','Tropical','Moderno','Otro']},
+      {id:'g_dress_code', label:'Dress code', ph:'Formal / Sin restricción'},
+      {id:'waltz_song',   label:'Canción del vals',ph:'Nombre del tema / artista',wide:true},
+      {id:'surprise_dance',label:'¿Baile sorpresa?',ph:'Sí, con los chambelanes / No',wide:true},
+      {id:'vals_chambelanes',label:'Chambelanes',ph:'14',type:'number'},
+      {id:'g_menu',       label:'Menú',       ph:'Cena, torta, gaseosas...'},
+      {id:'g_extra',      label:'Notas extra',ta:true,wide:true},
+    ]},
+  ],
+  cumple_inf:[
+    {section:'El Festejado/a',fields:[
+      {id:'g_name',   label:'Nombre',                 ph:'Mateo / Martina'},
+      {id:'g_age',    label:'¿Cuántos años cumple?',  ph:'5',type:'number'},
+      {id:'g_display',label:'Título de la invitación',ph:'¡Mateo cumple 5!',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',       label:'Fecha',        ph:'15 de agosto de 2026'},
+      {id:'g_time',       label:'Hora',         ph:'16:00 hs'},
+      {id:'g_venue',      label:'Lugar',        ph:'Salón / Casa',wide:true},
+      {id:'g_address',    label:'Dirección',    wide:true},
+      {id:'g_city',       label:'Ciudad'},
+      {id:'g_dress_code', label:'Dress code / Temática de ropa',ph:'Vengan de superhéroes...'},
+    ]},
+    {section:'Temática y Detalles',fields:[
+      {id:'g_theme_style',label:'Temática',sel:['— Elegir —','Princesas / Disney','Superhéroes','Dinosaurios','Unicornios','Animales','Espacio / Astronautas','Circo','Piratas','Otro']},
+      {id:'g_activities', label:'Actividades',ph:'Pintacaras, cama elástica, show...',wide:true},
+      {id:'g_menu',       label:'Menú',       ph:'Picada infantil, torta...'},
+      {id:'g_rsvp_date',  label:'Confirmar antes del',ph:'5 de agosto'},
+      {id:'g_extra',      label:'Notas adicionales',ta:true,wide:true},
+    ]},
+  ],
+  cumple_adu:[
+    {section:'El Festejado/a',fields:[
+      {id:'g_name',   label:'Nombre completo',          ph:'Marcela López'},
+      {id:'g_age',    label:'¿Qué cumpleaños festeja?', ph:'40',type:'number'},
+      {id:'g_display',label:'Título de la invitación',  ph:'Los 40 de Marcela',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',       label:'Fecha',        ph:'20 de octubre de 2026'},
+      {id:'g_time',       label:'Hora',         ph:'21:00 hs'},
+      {id:'g_venue',      label:'Lugar',        wide:true},
+      {id:'g_address',    label:'Dirección',    wide:true},
+      {id:'g_city',       label:'Ciudad'},
+      {id:'g_dress_code', label:'Dress code',   ph:'Formal / Casual / Temático'},
+    ]},
+    {section:'Detalles',fields:[
+      {id:'g_theme_style',label:'Estilo',sel:['— Elegir —','Glamour / Lujo','Décadas (80s, 90s...)','Tropical / Playa','Hollywood / Red Carpet','Minimalista moderno','Años 20 / Gatsby','Otro']},
+      {id:'g_menu',       label:'Menú',     ph:'Cena / Coctel / Parrilla...'},
+      {id:'g_music',      label:'Música',   ph:'DJ, banda, música en vivo...'},
+      {id:'g_surprise',   label:'¿Sorpresa?',ph:'Show, video, discursos...'},
+      {id:'g_rsvp_date',  label:'Confirmar antes del'},
+      {id:'g_extra',      label:'Notas',    ta:true,wide:true},
+    ]},
+  ],
+  bautismo:[
+    {section:'El Bebé',fields:[
+      {id:'g_name',      label:'Nombre del bebé',   ph:'Emilia / Tomás'},
+      {id:'g_display',   label:'Título',            ph:'El bautismo de Emilia',wide:true},
+      {id:'g_parents',   label:'Nombres de los papás',ph:'Lucía y Martín',wide:true},
+      {id:'g_godparents',label:'Padrinos',          ph:'Ana y Carlos',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',       label:'Fecha'},
+      {id:'g_time',       label:'Hora de la misa',  ph:'11:00 hs'},
+      {id:'g_church',     label:'Iglesia',          wide:true},
+      {id:'g_church_addr',label:'Dirección iglesia',wide:true},
+      {id:'g_venue',      label:'Salón posterior',  wide:true},
+      {id:'g_address',    label:'Dirección salón',  wide:true},
+      {id:'g_city',       label:'Ciudad'},
+      {id:'g_menu',       label:'Menú'},
+      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+    ]},
+  ],
+  comunion:[
+    {section:'El Festejado/a',fields:[
+      {id:'g_name',   label:'Nombre completo',  ph:'Valentina / Santiago'},
+      {id:'g_display',label:'Título',           ph:'La Primera Comunión de Valentina',wide:true},
+      {id:'g_parents',label:'Nombres de los papás',ph:'Lucía y Martín',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',       label:'Fecha'},
+      {id:'g_time',       label:'Hora de la misa',ph:'11:00 hs'},
+      {id:'g_church',     label:'Iglesia',       wide:true},
+      {id:'g_church_addr',label:'Dir. iglesia',  wide:true},
+      {id:'g_venue',      label:'Salón',         wide:true},
+      {id:'g_address',    label:'Dir. salón',    wide:true},
+      {id:'g_city',       label:'Ciudad'},
+      {id:'g_dress_code', label:'Dress code',    ph:'Blanco y dorado / Sin restricción'},
+      {id:'g_menu',       label:'Menú'},
+      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+    ]},
+  ],
+  baby_shower:[
+    {section:'La Familia',fields:[
+      {id:'g_mom',     label:'Nombre de la mamá',  ph:'Camila'},
+      {id:'g_dad',     label:'Nombre del papá',    ph:'Juan'},
+      {id:'g_baby_name',label:'Nombre del bebé',   ph:'Nombre o "es sorpresa"',wide:true},
+      {id:'g_display', label:'Título',             ph:'Baby Shower de Camila',wide:true},
+      {id:'g_organizer',label:'¿Quién organiza?',  ph:'Las amigas de / La familia de...',wide:true},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_date',   label:'Fecha',   ph:'10 de agosto'},
+      {id:'g_time',   label:'Hora',    ph:'16:00 hs'},
+      {id:'g_venue',  label:'Lugar',   wide:true},
+      {id:'g_address',label:'Dirección',wide:true},
+      {id:'g_city',   label:'Ciudad'},
+      {id:'g_gender', label:'¿Revelación de género?',ph:'Sí / No / Ya saben'},
+    ]},
+    {section:'Detalles',fields:[
+      {id:'g_theme_style',label:'Paleta / Temática',sel:['— Elegir —','Celeste / Nube (nene)','Rosa / Flores (nena)','Neutro / Beige / Sage','Colores vibrantes','Temático','Revelación de género']},
+      {id:'g_registry',   label:'Mesa de regalos',  ph:'Link o descripción'},
+      {id:'g_menu',       label:'Menú'},
+      {id:'g_activities', label:'Actividades / Juegos'},
+      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+    ]},
+  ],
+  corporativo:[
+    {section:'La Empresa',fields:[
+      {id:'g_company',    label:'Nombre de la empresa',  wide:true},
+      {id:'g_display',    label:'Título del evento',     ph:'Lanzamiento X / Cena de Fin de Año',wide:true},
+      {id:'g_contact',    label:'Contacto interno'},
+      {id:'g_brand_color',label:'Color de marca',        ph:'#1A73E8 / Azul corporativo'},
+    ]},
+    {section:'El Evento',fields:[
+      {id:'g_event_type', label:'Tipo',         ph:'Conferencia / Lanzamiento / Cena'},
+      {id:'g_date',       label:'Fecha'},
+      {id:'g_time',       label:'Hora'},
+      {id:'g_venue',      label:'Lugar',        wide:true},
+      {id:'g_address',    label:'Dirección',    wide:true},
+      {id:'g_city',       label:'Ciudad / País'},
+      {id:'g_dress_code', label:'Dress code',   ph:'Business / Formal'},
+    ]},
+    {section:'Detalles',fields:[
+      {id:'g_theme_style',label:'Tono visual',sel:['— Elegir —','Corporativo premium / Oscuro','Moderno / Minimalista','Tecnológico / Futurista','Cálido / Humano','Seguir identidad de marca']},
+      {id:'g_agenda',     label:'Agenda breve', ta:true,ph:'19:00 Bienvenida\n19:30 Presentación...',wide:true},
+      {id:'g_speakers',   label:'Oradores / Invitados especiales',wide:true},
+      {id:'g_rsvp_date',  label:'Confirmar antes del'},
+      {id:'g_extra',      label:'Info adicional',ta:true,wide:true},
+    ]},
+  ],
+  otro:[
+    {section:'El Evento',fields:[
+      {id:'g_event_type',label:'¿Qué tipo de evento es?',ph:'Aniversario / Graduación / Reunión...'},
+      {id:'g_display',   label:'Título de la invitación',ph:'Cómo va a aparecer',wide:true},
+      {id:'g_name',      label:'Protagonista(s)'},
+      {id:'g_date',      label:'Fecha'},
+      {id:'g_time',      label:'Hora'},
+      {id:'g_venue',     label:'Lugar',  wide:true},
+      {id:'g_address',   label:'Dirección',wide:true},
+      {id:'g_city',      label:'Ciudad'},
+      {id:'g_dress_code',label:'Dress code'},
+      {id:'g_extra',     label:'Contanos todo para crear la invitación perfecta',ta:true,wide:true,hint:'Historia, detalles, referencias de estilo...'},
+    ]},
+  ],
+};
+
+/* ══ STATE ═══════════════════════════════════ */
+let state={eventType:null,currentStep:0,data:{},
+  trivia:Array.from({length:10},()=>({q:'',a:'',b:'',c:'',d:'',ans:'a'}))};
+
+function getSteps(t){
+  if(!t) return['Tipo'];
+  return['Tipo',...(FD[t]||[]).map(s=>s.section),'Estética','Técnico'];
+}
+
+/* ══ INIT ════════════════════════════════════ */
+function init(){renderStep(0);}
+
+function renderStep(step){
+  state.currentStep=step;
+  updateProgress();
+  const area=document.getElementById('formArea');
+  area.innerHTML='';
+  const steps=getSteps(state.eventType);
+
+  if(step===0){ area.innerHTML=renderType(); }
+  else if(step===steps.length-1){ area.innerHTML=renderTécnico(); }
+  else if(step===steps.length-2){ area.innerHTML=renderEstética(); }
+  else{
+    const sec=FD[state.eventType]?.[step-1];
+    if(sec) area.innerHTML=renderSection(sec,step);
+  }
+
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.form-card').forEach((c,i)=>
+      setTimeout(()=>c.classList.add('vis'),i*80));
+    // Stagger float timing per icon so they don't all move in sync
+    document.querySelectorAll('.event-icon').forEach((ic,i)=>{
+      ic.style.setProperty('--fi', (2.4 + i * 0.35)+'s');
+      ic.style.animationDelay = -(i * 0.4)+'s';
+    });
+  });
+  restoreData();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const steps=getSteps(state.eventType);
+  document.getElementById('progressSteps').innerHTML=steps.map((lbl,i)=>{
+    const done=i<state.currentStep,active=i===state.currentStep;
+    return`${i>0?`<div class="step-line ${done?'done':''}"></div>`:''}
+    <div class="progress-step ${active?'active':''} ${done?'done':''}">
+      <div class="step-circle ${active?'active':''} ${done?'done':''}">${done?'✓':i+1}</div>
+      <div class="step-label">${lbl}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══ STEP 0 ══════════════════════════════════ */
+function renderType(){
+  const opts=EVENTS.map(e=>`
+    <label class="event-opt ${state.eventType===e.v?'selected':''}"
+      onclick="selEvent('${e.v}',this,event)">
+      <input type="radio" name="evt" value="${e.v}">
+      <span class="event-icon">${e.icon}</span>
+      <div class="event-name">${e.name}</div>
+      <p class="event-sub">${e.sub}</p>
+      <div class="event-check"></div>
+    </label>`).join('');
+
+  return`<div class="form-card">
+    <div class="card-eyebrow">Paso 1</div>
+    <div class="card-title">¿Qué tipo de evento es?</div>
+    <div class="card-subtitle">Elegí y el formulario se adapta automáticamente con las preguntas exactas para tu evento.</div>
+    <div class="card-rule"></div>
+    <div class="event-grid">${opts}</div>
+    <div class="contact-section">
+      <div class="section-label">Tus datos de contacto</div>
+      <div class="field-row">
+        <div class="field"><label>Tu nombre <span class="hint">— quien hace el pedido</span></label>
+          <input type="text" id="f_contact_name" placeholder="María González"></div>
+        <div class="field"><label>Tu email *</label>
+          <input type="email" id="f_contact_email" placeholder="maria@email.com"></div>
+      </div>
+      <div class="field"><label>WhatsApp <span class="hint">— opcional, para coordinar</span></label>
+        <input type="tel" id="f_contact_phone" placeholder="+54 11 1234-5678"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextFromType()">Continuar →</button>
+    </div>
+  </div>`;
+}
+
+function selEvent(type,el,ev){
+  state.eventType=type;
+  document.querySelectorAll('.event-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  // Spark effect
+  const spark=document.createElement('div');
+  spark.className='spark';
+  const rect=el.getBoundingClientRect();
+  spark.style.cssText=`left:${ev.clientX-rect.left}px;top:${ev.clientY-rect.top}px;
+    background:radial-gradient(circle,rgba(182,111,255,.5),transparent);transform-origin:center;`;
+  el.appendChild(spark);
+  setTimeout(()=>spark.remove(),500);
+}
+
+function nextFromType(){
+  if(!state.eventType){showToast('Elegí un tipo de evento ✨',true);return;}
+  saveData();
+  if(!state.data.contact_email){showToast('Tu email es obligatorio 📧',true);return;}
+  renderStep(1);
+}
+
+/* ══ SECCIÓN DINÁMICA ════════════════════════ */
+function renderSection(sec,step){
+  const steps=getSteps(state.eventType);
+  const fields=(sec.fields||[]).map(f=>{
+    const cls=f.wide?'style="grid-column:1/-1"':'';
+    if(f.ta) return`<div class="field" ${cls}><label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>
+      <textarea id="f_${f.id}" placeholder="${f.ph||''}">${state.data[f.id]||''}</textarea></div>`;
+    if(f.sel) return`<div class="field" ${cls}><label>${f.label}</label>
+      <select id="f_${f.id}">${f.sel.map(o=>`<option ${state.data[f.id]===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+    return`<div class="field" ${cls}><label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>
+      <input type="${f.type||'text'}" id="f_${f.id}" placeholder="${f.ph||''}" value="${state.data[f.id]||''}"></div>`;
+  }).join('');
+
+  const triviaHtml=sec.trivia?renderTrivia():'';
+
+  return`<div class="form-card">
+    <div class="card-eyebrow">Paso ${step} de ${steps.length-1}</div>
+    <div class="card-title">${sec.section}</div>
+    <div class="card-rule"></div>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr));">${fields}</div>
+    ${triviaHtml}
+    ${nav(step-1,step+1)}
+  </div>`;
+}
+
+function renderTrivia(){
+  return`<div class="card-eyebrow" style="margin-top:1.2rem;">Trivia</div>
+  <p style="font-size:.85rem;color:var(--text-2);margin:.3rem 0 1rem;line-height:1.65;">
+    10 preguntas sobre la pareja. Podés dejarlas en blanco y escribir "INVENTAR" en la primera si querés que las creemos nosotros.
+  </p>
+  <div class="trivia-wrap"><table class="trivia-table">
+    <thead><tr><th>#</th><th>Pregunta</th><th>Opciones a / b / c / d</th><th>Resp.</th></tr></thead>
+    <tbody>${state.trivia.map((t,i)=>`<tr>
+      <td class="trivia-num">${i+1}</td>
+      <td><input class="t-input" placeholder="¿...?" value="${t.q}" onchange="state.trivia[${i}].q=this.value"></td>
+      <td style="min-width:150px;">
+        ${['a','b','c','d'].map((l,j)=>`<input class="t-input" placeholder="${l})" value="${t[l]}" onchange="state.trivia[${i}].${l}=this.value"${j<3?' style="margin-bottom:2px;"':''}>`).join('')}
+      </td>
+      <td class="t-ans"><select onchange="state.trivia[${i}].ans=this.value">
+        ${['a','b','c','d'].map(x=>`<option ${t.ans===x?'selected':''}>${x}</option>`).join('')}
+      </select></td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+/* ══ ESTÉTICA ════════════════════════════════ */
+function renderEstética(){
+  const steps=getSteps(state.eventType);
+  const step=steps.length-2;
+  const grid=THEMES.map(t=>`
+    <label class="theme-card ${state.data.theme_code===t.code?'selected':''}" onclick="selTheme('${t.code}',this)">
+      <input type="radio" name="theme" value="${t.code}">
+      <div class="theme-swatch" style="background:${t.bg};border-bottom:2px solid ${t.accent};"></div>
+      <div class="theme-info">
+        <div class="theme-num">${t.code}</div>
+        <div class="theme-name">${t.name}</div>
+        <div class="theme-desc">${t.desc}</div>
+      </div>
+      <div class="theme-tick"></div>
+    </label>`).join('');
+
+  return`<div class="form-card">
+    <div class="card-eyebrow">Paso ${step} de ${steps.length-1}</div>
+    <div class="card-title">Estética & Tema Visual</div>
+    <div class="card-subtitle">Elegí el universo visual de tu invitación. Si querés algo diferente o a medida, marcá el más cercano y describilo abajo.</div>
+    <div class="card-rule"></div>
+    <div class="theme-grid">${grid}</div>
+    <input type="hidden" id="f_theme_code" value="${state.data.theme_code||''}">
+    <div class="field" style="margin-top:1.3rem;">
+      <label>Ajustes, referencias o colores específicos <span class="hint">— opcional</span></label>
+      <textarea id="f_theme_notes" placeholder="Links de inspiración, colores de marca, ambiente...">${state.data.theme_notes||''}</textarea>
+    </div>
+    <div class="field">
+      <label>Música de fondo <span class="hint">— Spotify, YouTube, mp3</span></label>
+      <input type="url" id="f_music_url" value="${state.data.music_url||''}" placeholder="https://...">
+    </div>
+    ${nav(step-1,step+1)}
+  </div>`;
+}
+
+function selTheme(code,el){
+  state.data.theme_code=code;
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  const h=document.getElementById('f_theme_code');
+  if(h) h.value=code;
+}
+
+/* ══ TÉCNICO ══════════════════════════════ */
+function renderTécnico(){
+  const steps=getSteps(state.eventType);
+  const step=steps.length-1;
+  return`<div class="form-card">
+    <div class="card-eyebrow">Último paso 🎉</div>
+    <div class="card-title">Información Técnica</div>
+    <div class="card-subtitle">Todo opcional — lo que no sepas lo coordinamos juntos.</div>
+    <div class="card-rule"></div>
+    <div class="field-row">
+      <div class="field"><label>URL del sitio <span class="hint">— si ya tienen</span></label>
+        <input type="url" id="f_site_url" value="${state.data.site_url||''}" placeholder="https://..."></div>
+      <div class="field"><label>¿Cuántos invitados aprox.?</label>
+        <input type="number" id="f_guests_count" value="${state.data.guests_count||''}" placeholder="100"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>¿Confirmación de asistencia?</label>
+        <select id="f_wants_rsvp">
+          <option value="">— Elegir —</option>
+          <option value="si" ${state.data.wants_rsvp==='si'?'selected':''}>Sí</option>
+          <option value="no" ${state.data.wants_rsvp==='no'?'selected':''}>No</option>
+        </select></div>
+      <div class="field"><label>País del evento</label>
+        <input type="text" id="f_country" value="${state.data.country||''}" placeholder="Argentina"></div>
+    </div>
+    <div class="field"><label>Notas adicionales, referencias, links de inspiración</label>
+      <textarea id="f_extra_notes" placeholder="Cualquier detalle extra...">${state.data.extra_notes||''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">ENVIAR BRIEFING ✨</button>
+    </div>
+  </div>`;
+}
+
+/* ══ NAV ══════════════════════════════════ */
+function nav(prev,next){
+  return`<div class="btn-row">
+    ${prev>0?`<button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>`:''}
+    <button class="btn btn-primary" onclick="nextStep(${next})">Continuar →</button>
+  </div>`;
+}
+function nextStep(n){saveData();renderStep(n);}
+function prevStep(){saveData();renderStep(state.currentStep-1);}
+
+/* ══ DATA ════════════════════════════════ */
+function saveData(){
+  document.querySelectorAll('[id^="f_"]').forEach(el=>
+    state.data[el.id.replace('f_','')]=el.value);
+}
+function restoreData(){
+  Object.entries(state.data).forEach(([k,v])=>{
+    const el=document.getElementById('f_'+k);
+    if(el&&v) el.value=v;
+  });
+}
+
+/* ══ SUBMIT ══════════════════════════════ */
+async function submitForm(){
+  saveData();
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Enviando...';
+  try{
+    const p=buildPayload();
+    const {error}=await sbInsert(p);
+    if(error) throw new Error(error.message||'Error Supabase');
+    await sendEmail(p);
+    document.getElementById('formArea').style.display='none';
+    document.getElementById('progressWrap').style.display='none';
+    const s=document.getElementById('successScreen');
+    s.style.display='block';
+    requestAnimationFrame(()=>s.classList.add('vis'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){
+    showToast('Error al enviar. Reintentá.',true);
+    btn.disabled=false;btn.textContent='ENVIAR BRIEFING ✨';
+  }
+}
+
+function buildPayload(){
+  const d=state.data;
+  return{
+    event_type:state.eventType,
+    contact_name:d.contact_name,contact_email:d.contact_email,contact_phone:d.contact_phone,
+    bride_name:d.bride_name,groom_name:d.groom_name,couple_display:d.couple_display,initials:d.initials,
+    event_date:d.event_date,event_time:d.event_time,
+    ceremony_venue:d.ceremony_venue,ceremony_address:d.ceremony_address,
+    reception_venue:d.reception_venue,reception_address:d.reception_address,
+    city_country:d.city_country,dress_code:d.dress_code,
+    theme_code:d.theme_code,theme_notes:d.theme_notes,music_url:d.music_url,
+    story_met:d.story_met,story_first_date:d.story_first_date,story_proposal:d.story_proposal,
+    tables_count:parseInt(d.tables_count)||null,tables_capacity:parseInt(d.tables_capacity)||null,
+    tables_honor:d.tables_honor==='Sí',tables_names:d.tables_names,
+    trivia:state.trivia,
+    site_url:d.site_url,guests_count:parseInt(d.guests_count)||null,
+    wants_rsvp:d.wants_rsvp==='si',country:d.country,extra_notes:d.extra_notes,
+    g_name:d.g_name,g_display:d.g_display,g_age:d.g_age,g_parents:d.g_parents,
+    g_godparents:d.g_godparents,g_company:d.g_company,g_contact:d.g_contact,
+    g_brand_color:d.g_brand_color,g_event_type:d.g_event_type,
+    g_date:d.g_date,g_time:d.g_time,g_venue:d.g_venue,g_address:d.g_address,
+    g_city:d.g_city,g_church:d.g_church,g_church_addr:d.g_church_addr,
+    g_dress_code:d.g_dress_code,g_theme_style:d.g_theme_style,g_menu:d.g_menu,
+    g_activities:d.g_activities,g_rsvp_date:d.g_rsvp_date,g_music:d.g_music,
+    g_surprise:d.g_surprise,g_agenda:d.g_agenda,g_speakers:d.g_speakers,
+    g_gender:d.g_gender,g_baby_name:d.g_baby_name,g_mom:d.g_mom,g_dad:d.g_dad,
+    g_organizer:d.g_organizer,g_registry:d.g_registry,g_extra:d.g_extra,
+    waltz_song:d.waltz_song,surprise_dance:d.surprise_dance,
+    vals_chambelanes:parseInt(d.vals_chambelanes)||null,
+  };
+}
+
+async function sbInsert(p){
+  const r=await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/briefings`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':CONFIG.SUPABASE_ANON_KEY,
+      'Authorization':`Bearer ${CONFIG.SUPABASE_ANON_KEY}`,'Prefer':'return=minimal'},
+    body:JSON.stringify(p)
+  });
+  if(!r.ok){const e=await r.json().catch(()=>({}));return{error:e};}
+  return{data:true};
+}
+
+async function sendEmail(d){
+  const lbl={casamiento:'💍 Casamiento',quinceanera:'🌸 Quinceañera',
+    cumple_inf:'🎈 Cumple Infantil',cumple_adu:'🥂 Cumple Adulto',
+    bautismo:'🕊️ Bautismo',corporativo:'🏢 Corporativo',
+    comunion:'✝️ Comunión',baby_shower:'🍼 Baby Shower',otro:'✨ Otro'};
+  const name=d.couple_display||d.girl_display||d.g_display||d.g_name||d.g_company||'—';
+  const date=d.event_date||d.g_date||'—';
+  await fetch('https://api.resend.com/emails',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${CONFIG.RESEND_API_KEY}`},
+    body:JSON.stringify({
+      from:`${CONFIG.SITE_NAME} <onboarding@resend.dev>`,
+      to:[CONFIG.ADMIN_EMAIL],
+      subject:`✦ Nuevo briefing: ${name} · ${lbl[d.event_type]||d.event_type}`,
+      html:`<div style="font-family:Arial;max-width:560px;background:#0d0a14;color:#f0eaf8;padding:2rem;border-radius:12px;">
+        <h2 style="color:#b66fff;font-weight:400;margin-bottom:1rem;">✦ Nuevo briefing recibido</h2>
+        <p><b>Tipo:</b> ${lbl[d.event_type]||d.event_type}</p>
+        <p><b>Evento:</b> ${name}</p><p><b>Fecha:</b> ${date}</p>
+        <p><b>Contacto:</b> ${d.contact_name||'—'} · ${d.contact_email||''}</p>
+        <p><b>Tema:</b> ${d.theme_code?'Tema '+d.theme_code:'—'}</p>
+        <p><b>Invitados:</b> ${d.guests_count||'—'}</p>
+        <p style="margin-top:1rem;color:rgba(240,234,248,.5);font-size:.85rem;">Ver detalles completos en el panel de administración.</p>
+      </div>`
+    })
+  });
+}
+
+/* ══ TOAST ═══════════════════════════════ */
+let tT;
+function showToast(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show'+(err?' error':'');
+  clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+init();
+</script>
+</body>
+</html>
