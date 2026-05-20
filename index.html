@@ -1302,25 +1302,31 @@ async function sendEmail(d){
     cumple_inf:'🎈 Cumple Infantil',cumple_adu:'🥂 Cumple Adulto',
     bautismo:'🕊️ Bautismo',corporativo:'🏢 Corporativo',
     comunion:'✝️ Comunión',baby_shower:'🍼 Baby Shower',otro:'✨ Otro'};
+  const typeLabel=lbl[d.event_type]||d.event_type;
   const name=d.couple_display||d.girl_display||d.g_display||d.g_name||d.g_company||'—';
   const date=d.event_date||d.g_date||'—';
-  await fetch('https://api.resend.com/emails',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':`Bearer ${CONFIG.RESEND_API_KEY}`},
-    body:JSON.stringify({
-      from:`${CONFIG.SITE_NAME} <onboarding@resend.dev>`,
-      to:[CONFIG.ADMIN_EMAIL],
-      subject:`✦ Nuevo briefing: ${name} · ${lbl[d.event_type]||d.event_type}`,
-      html:`<div style="font-family:Arial;max-width:560px;background:#0d0a14;color:#f0eaf8;padding:2rem;border-radius:12px;">
-        <h2 style="color:#b66fff;font-weight:400;margin-bottom:1rem;">✦ Nuevo briefing recibido</h2>
-        <p><b>Tipo:</b> ${lbl[d.event_type]||d.event_type}</p>
-        <p><b>Evento:</b> ${name}</p><p><b>Fecha:</b> ${date}</p>
-        <p><b>Contacto:</b> ${d.contact_name||'—'} · ${d.contact_email||''}</p>
-        <p><b>Tema:</b> ${d.theme_code?'Tema '+d.theme_code:'—'}</p>
-        <p><b>Invitados:</b> ${d.guests_count||'—'}</p>
-        <p style="margin-top:1rem;color:rgba(240,234,248,.5);font-size:.85rem;">Ver detalles completos en el panel de administración.</p>
-      </div>`
-    })
+
+  const html=`<div style="font-family:Arial;max-width:560px;background:#0d0a14;color:#f0eaf8;padding:2rem;border-radius:12px;">
+    <h2 style="color:#b66fff;font-weight:400;margin-bottom:1rem;">✦ Nuevo briefing recibido</h2>
+    <p><b>Tipo:</b> ${typeLabel}</p>
+    <p><b>Evento:</b> ${name}</p><p><b>Fecha:</b> ${date}</p>
+    <p><b>Contacto:</b> ${d.contact_name||'—'} · ${d.contact_email||''}</p>
+    <p><b>Tema:</b> ${d.theme_code?'Tema '+d.theme_code:'—'}</p>
+    <p><b>Invitados:</b> ${d.guests_count||'—'}</p>
+    <p style="margin-top:1rem;color:rgba(240,234,248,.5);font-size:.85rem;">Ver detalles completos en el panel de administración.</p>
+  </div>`;
+
+  // Llamamos a la Edge Function de Supabase (evita CORS de Resend)
+  await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/send-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({
+      subject: `✦ Nuevo briefing: ${name} · ${typeLabel}`,
+      html,
+    }),
   });
 }
 
