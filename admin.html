@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0d0a14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bether Admin">
+<link rel="manifest" id="pwaManifest">
 <title>Bether Studio · Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -232,6 +237,107 @@ input,select,textarea{font-family:inherit;}
 .status-completado{background:var(--green);}
 .status-pausado  {background:var(--text-3);}
 
+/* ── READ STATUS TICKS ── */
+.read-tick{
+  margin-left:auto;font-size:.75rem;letter-spacing:-.05em;
+  transition:all .3s var(--ease);flex-shrink:0;
+}
+.read-unread .read-tick{color:var(--text-3);}
+.read-read   .read-tick{color:var(--blue);}
+.read-working .read-tick{color:var(--v1);text-shadow:0 0 8px rgba(182,111,255,.5);}
+
+/* Dot no leído */
+.brief-item.read-unread::after{
+  content:'';position:absolute;top:.85rem;right:.9rem;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--amber);
+  box-shadow:0 0 8px var(--amber);
+}
+.brief-item.read-unread .read-tick{display:none;}
+
+/* Nombre en negrita si no leído */
+.brief-item.read-unread .brief-item-name{
+  font-weight:600;color:white;
+}
+
+/* Notif badge en el título de la pestaña */
+.notif-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;border-radius:9px;
+  background:linear-gradient(135deg,var(--p2),var(--v1));
+  font-family:var(--display);font-size:.58rem;font-weight:800;
+  color:white;padding:0 4px;margin-left:.4rem;
+  box-shadow:0 2px 8px rgba(255,62,138,.4);
+  animation:badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse{
+  0%,100%{box-shadow:0 2px 8px rgba(255,62,138,.4);}
+  50%{box-shadow:0 2px 16px rgba(255,62,138,.7),0 0 24px rgba(182,111,255,.3);}
+}
+
+/* ── FILTRO NO LEÍDOS ── */
+.ftab.unread-tab{position:relative;}
+
+/* ── HTML SECTION ── */
+.html-upload-zone{
+  border:1.5px dashed var(--border-2);border-radius:10px;
+  padding:1.2rem;text-align:center;cursor:pointer;
+  transition:all .3s var(--ease);position:relative;
+  background:rgba(182,111,255,.03);
+}
+.html-upload-zone:hover,.html-upload-zone.drag-over{
+  border-color:var(--v1);background:rgba(182,111,255,.07);
+}
+.html-upload-zone input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.html-upload-icon{font-size:1.6rem;margin-bottom:.4rem;}
+.html-upload-label{
+  font-family:var(--display);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;color:var(--text-2);
+}
+.html-upload-hint{font-size:.72rem;color:var(--text-3);margin-top:.2rem;}
+
+.html-saved{
+  background:rgba(0,229,192,.06);border:1px solid rgba(0,229,192,.2);
+  border-radius:10px;padding:.9rem 1rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.html-saved-icon{font-size:1.2rem;}
+.html-saved-info{flex:1;min-width:0;}
+.html-saved-name{
+  font-family:var(--display);font-size:.68rem;font-weight:700;
+  color:var(--c1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.html-saved-size{font-size:.62rem;color:var(--text-3);}
+.html-saved-actions{display:flex;gap:.4rem;flex-shrink:0;}
+.btn-html-action{
+  font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.06em;
+  padding:.35rem .7rem;border-radius:6px;cursor:pointer;transition:all .2s;
+  border:1px solid var(--border-2);color:var(--text-2);background:transparent;
+}
+.btn-html-action:hover{color:var(--text);border-color:var(--border-2);background:var(--surface-2);}
+.btn-html-action.danger{color:var(--red);border-color:rgba(255,107,138,.2);}
+.btn-html-action.danger:hover{background:rgba(255,107,138,.08);}
+
+/* ── NOTIF BELL BUTTON ── */
+.bell-btn{
+  font-size:1rem;padding:.32rem .55rem;position:relative;
+  border-radius:7px;border:1px solid var(--border);
+  background:transparent;color:var(--text-3);
+  transition:all .22s;cursor:pointer;
+}
+.bell-btn:hover{color:var(--amber);border-color:rgba(255,157,77,.3);background:rgba(255,157,77,.06);}
+.bell-btn.active{color:var(--amber);border-color:rgba(255,157,77,.4);
+  box-shadow:0 0 12px rgba(255,157,77,.2);}
+.bell-dot{
+  position:absolute;top:3px;right:3px;width:7px;height:7px;
+  border-radius:50%;background:var(--p2);
+  box-shadow:0 0 6px var(--p2);
+  display:none;
+}
+.bell-btn.has-new .bell-dot{display:block;animation:badgePulse 1.5s infinite;}
+
 .empty-list{padding:2.5rem 1rem;text-align:center;
   font-family:var(--serif);font-style:italic;color:var(--text-3);font-size:.9rem;}
 
@@ -350,7 +456,107 @@ input,select,textarea{font-family:inherit;}
 .trivia-opts{font-size:.78rem;color:var(--text-3);margin-top:.1rem;line-height:1.5;}
 .trivia-ans{color:var(--c1);font-weight:700;}
 
-/* ══ TOAST ══════════════════════════════════════ */
+/* ══ MODAL PROMPT ══════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(5,3,10,.92);backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;padding:1.5rem;
+}
+.modal-overlay.open{display:flex;animation:fadeIn .25s var(--ease);}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.modal-box{
+  background:rgba(255,255,255,.04);border:1px solid var(--border-2);
+  border-radius:18px;width:100%;max-width:680px;max-height:88vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(182,111,255,.1);
+  position:relative;
+}
+.modal-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--v1),var(--p1),transparent);
+}
+.modal-head{
+  padding:1.2rem 1.4rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.modal-title{
+  font-family:var(--display);font-size:.72rem;font-weight:800;
+  letter-spacing:.15em;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--v1),var(--p1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.modal-close{
+  background:none;border:1px solid var(--border);border-radius:6px;
+  color:var(--text-3);font-size:.82rem;padding:.2rem .5rem;
+  transition:all .2s;cursor:pointer;
+}
+.modal-close:hover{color:var(--text);border-color:var(--border-2);}
+
+.modal-body{flex:1;overflow-y:auto;padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.8rem;}
+.modal-body::-webkit-scrollbar{width:3px;}
+.modal-body::-webkit-scrollbar-thumb{background:rgba(182,111,255,.25);border-radius:2px;}
+
+.prompt-hint{
+  font-family:var(--serif);font-style:italic;font-size:.84rem;
+  color:var(--text-3);line-height:1.6;
+}
+.prompt-textarea{
+  flex:1;min-height:340px;
+  background:rgba(0,0,0,.25);
+  border:1.5px solid var(--border);border-radius:10px;
+  padding:.9rem 1rem;color:var(--text);
+  font-family:'DM Mono','Courier New',monospace;font-size:.78rem;line-height:1.7;
+  outline:none;resize:none;transition:border-color .2s;
+}
+.prompt-textarea:focus{border-color:var(--v1);}
+
+.modal-foot{
+  padding:.9rem 1.4rem;border-top:1px solid var(--border);
+  display:flex;gap:.6rem;justify-content:flex-end;flex-shrink:0;
+}
+.btn-copy-prompt{
+  font-family:var(--display);font-size:.68rem;font-weight:700;letter-spacing:.08em;
+  padding:.65rem 1.6rem;border-radius:8px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--v2),var(--v1),var(--p2));
+  color:white;box-shadow:0 4px 18px rgba(124,58,255,.35);
+  transition:all .25s var(--ease);
+}
+.btn-copy-prompt:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,255,.45);}
+.btn-copy-prompt.copied{background:linear-gradient(135deg,var(--c2),var(--c1));}
+
+/* Confirm dialog */
+.confirm-overlay{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(5,3,10,.88);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.confirm-overlay.open{display:flex;animation:fadeIn .2s var(--ease);}
+.confirm-box{
+  background:rgba(255,255,255,.05);border:1px solid var(--border-2);
+  border-radius:14px;padding:1.8rem 1.6rem;max-width:380px;text-align:center;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.confirm-icon{font-size:2rem;margin-bottom:.6rem;}
+.confirm-title{font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.4rem;}
+.confirm-msg{font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--text-2);margin-bottom:1.3rem;line-height:1.6;}
+.confirm-btns{display:flex;gap:.6rem;justify-content:center;}
+.btn-confirm-cancel{
+  font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.08em;
+  padding:.6rem 1.2rem;border-radius:8px;
+  border:1px solid var(--border-2);color:var(--text-2);background:transparent;
+  cursor:pointer;transition:all .2s;
+}
+.btn-confirm-cancel:hover{color:var(--text);border-color:var(--text-3);}
+.btn-confirm-ok{
+  font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.08em;
+  padding:.6rem 1.2rem;border-radius:8px;
+  border:none;background:linear-gradient(135deg,#c0392b,#e74c3c);
+  color:white;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 14px rgba(192,57,43,.35);
+}
+.btn-confirm-ok:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(192,57,43,.5);}
+
 .toast{
   position:fixed;bottom:1.6rem;left:50%;
   transform:translateX(-50%) translateY(12px);z-index:900;
@@ -397,7 +603,11 @@ input,select,textarea{font-family:inherit;}
     <div class="header-logo">Bether <span>STUDIO</span></div>
     <div class="header-sep"></div>
     <span class="header-count" id="headerCount"></span>
+    <button class="bell-btn" id="bellBtn" onclick="toggleNotif()" title="Notificaciones push">
+      🔔<div class="bell-dot" id="bellDot"></div>
+    </button>
     <button class="header-btn" onclick="loadBriefings()">↺ ACTUALIZAR</button>
+    <button class="header-btn" onclick="confirmLimpiar()" style="color:var(--red);border-color:rgba(255,107,138,.2);">🗑 LIMPIAR PRUEBAS</button>
     <button class="header-btn" onclick="exportCSV()">EXPORTAR CSV</button>
     <button class="header-btn primary" onclick="logout()">SALIR</button>
   </header>
@@ -408,6 +618,7 @@ input,select,textarea{font-family:inherit;}
         <input class="search-input" type="text" placeholder="Buscar briefing…" oninput="filterList(this.value)">
         <div class="filter-tabs">
           <button class="ftab active" onclick="setFilter('all',this)">TODOS</button>
+          <button class="ftab unread-tab" onclick="setFilter('unread',this)" id="unreadTab">NO LEÍDOS</button>
           <button class="ftab" onclick="setFilter('nuevo',this)">NUEVOS</button>
           <button class="ftab" onclick="setFilter('en_proceso',this)">EN PROCESO</button>
           <button class="ftab" onclick="setFilter('completado',this)">LISTOS</button>
@@ -421,6 +632,37 @@ input,select,textarea{font-family:inherit;}
     <main class="detail" id="detailPanel">
       <div class="detail-empty">Seleccioná un briefing para ver los detalles</div>
     </main>
+  </div>
+</div>
+
+<!-- MODAL PROMPT EDITABLE -->
+<div class="modal-overlay" id="promptModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">✦ PROMPT PARA CLAUDE</div>
+      <button class="modal-close" onclick="closePromptModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="prompt-hint">Revisá y editá el prompt antes de copiarlo. Podés ajustar cualquier detalle directamente acá.</p>
+      <textarea class="prompt-textarea" id="promptTextarea" spellcheck="false"></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="modal-close" onclick="closePromptModal()">CERRAR</button>
+      <button class="btn-copy-prompt" id="btnCopyPrompt" onclick="copyPromptFromModal()">COPIAR Y PEGAR EN CLAUDE ✦</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM ELIMINAR -->
+<div class="confirm-overlay" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirmIcon">🗑</div>
+    <div class="confirm-title" id="confirmTitle">¿Eliminar briefing?</div>
+    <p class="confirm-msg" id="confirmMsg">Esta acción no se puede deshacer.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-cancel" onclick="closeConfirm()">CANCELAR</button>
+      <button class="btn-confirm-ok" id="confirmOkBtn">ELIMINAR</button>
+    </div>
   </div>
 </div>
 
@@ -509,6 +751,8 @@ function renderList() {
   let data = [...allBriefings];
   if (['nuevo','en_proceso','completado','pausado'].includes(currentFilter))
     data = data.filter(b => b.status === currentFilter);
+  else if (currentFilter === 'unread')
+    data = data.filter(b => b.read_status === 'unread' || !b.read_status);
   else if (currentFilter !== 'all')
     data = data.filter(b => b.event_type === currentFilter);
   if (currentSearch)
@@ -518,20 +762,34 @@ function renderList() {
   const list = document.getElementById('briefList');
   if (!data.length) { list.innerHTML = '<div class="empty-list">Sin resultados</div>'; return; }
 
+  const tickMap = { unread:'✓', read:'✓✓', working:'✓✓' };
+  const tickColor = { unread:'var(--text-3)', read:'var(--blue)', working:'var(--v1)' };
+
   list.innerHTML = data.map(b => {
     const name = displayName(b);
     const date = displayDate(b);
     const created = new Date(b.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
-    return `<div class="brief-item ${b.id===selectedId?'active':''}" onclick="selectBriefing('${b.id}')">
+    const rs = b.read_status || 'unread';
+    const tick = tickMap[rs] || '✓';
+    const tColor = tickColor[rs] || 'var(--text-3)';
+    return `<div class="brief-item read-${rs} ${b.id===selectedId?'active':''}" onclick="selectBriefing('${b.id}')">
       <div class="brief-item-name">${name}</div>
       <div class="brief-item-meta">
         <div class="status-dot status-${b.status}"></div>
         <span class="type-pill type-${b.event_type}">${TYPE_LABELS[b.event_type]||b.event_type}</span>
         <span class="brief-item-date">${date}</span>
-        <span class="brief-item-date" style="margin-left:auto;opacity:.55">${created}</span>
+        <span class="read-tick" style="color:${tColor};margin-left:auto;">${tick}</span>
+        ${b.final_html ? '<span style="font-size:.7rem;opacity:.6" title="HTML entregado">📄</span>' : ''}
       </div>
     </div>`;
   }).join('');
+
+  // Actualizar badge de no leídos
+  const unreadCount = allBriefings.filter(b => !b.read_status || b.read_status === 'unread').length;
+  const tab = document.getElementById('unreadTab');
+  if (tab) tab.innerHTML = `NO LEÍDOS${unreadCount>0?` <span class="notif-badge">${unreadCount}</span>`:''}`;
+  updateBellBadge(unreadCount);
+  updatePageTitle(unreadCount);
 }
 
 /* ══ DETAIL ══ */
@@ -563,7 +821,7 @@ function renderDetail(b) {
           <option value="pausado"     ${b.status==='pausado'?'selected':''}>● Pausado</option>
         </select>
         <button class="header-btn ${editMode?'primary':''}" onclick="toggleEdit('${b.id}')">${editMode?'GUARDAR ✓':'EDITAR'}</button>
-        <button class="header-btn" onclick="copyPrompt('${b.id}')">COPIAR PROMPT</button>
+        <button class="header-btn" onclick="openPromptModal('${b.id}')" style="color:var(--v1);border-color:rgba(182,111,255,.3);">✦ GENERAR PROMPT</button>
         <button class="header-btn" onclick="deleteBriefing('${b.id}')" style="color:var(--red);border-color:rgba(255,107,138,.2);">ELIMINAR</button>
       </div>
     </div>
@@ -650,6 +908,63 @@ function renderDetail(b) {
         placeholder="Notas internas, estado del proyecto, pendientes…"
         onblur="saveNotes('${b.id}')">${b.admin_notes||''}</textarea>
     </div>
+
+    <!-- ESTADO DE LECTURA -->
+    <div class="detail-section">
+      <div class="section-title">ESTADO DE LECTURA</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+        <button onclick="setReadStatus('${b.id}','unread')"
+          style="font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.08em;
+            padding:.5rem 1rem;border-radius:8px;cursor:pointer;transition:all .25s;
+            border:1.5px solid ${b.read_status==='unread'?'var(--amber)':'var(--border)'};
+            background:${b.read_status==='unread'?'rgba(255,157,77,.12)':'transparent'};
+            color:${b.read_status==='unread'?'var(--amber)':'var(--text-3)'};">
+          ✓ Sin leer
+        </button>
+        <button onclick="setReadStatus('${b.id}','read')"
+          style="font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.08em;
+            padding:.5rem 1rem;border-radius:8px;cursor:pointer;transition:all .25s;
+            border:1.5px solid ${b.read_status==='read'?'var(--blue)':'var(--border)'};
+            background:${b.read_status==='read'?'rgba(136,184,232,.12)':'transparent'};
+            color:${b.read_status==='read'?'var(--blue)':'var(--text-3)'};">
+          ✓✓ Visto
+        </button>
+        <button onclick="setReadStatus('${b.id}','working')"
+          style="font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.08em;
+            padding:.5rem 1rem;border-radius:8px;cursor:pointer;transition:all .25s;
+            border:1.5px solid ${b.read_status==='working'?'var(--v1)':'var(--border)'};
+            background:${b.read_status==='working'?'rgba(182,111,255,.12)':'transparent'};
+            color:${b.read_status==='working'?'var(--v1)':'var(--text-3)'};">
+          ✓✓ Trabajando
+        </button>
+      </div>
+    </div>
+
+    <!-- HTML FINAL ENTREGADO -->
+    <div class="detail-section">
+      <div class="section-title">INVITACIÓN ENTREGADA</div>
+      ${b.final_html ? `
+        <div class="html-saved">
+          <div class="html-saved-icon">📄</div>
+          <div class="html-saved-info">
+            <div class="html-saved-name">${b.final_html_name||'invitacion.html'}</div>
+            <div class="html-saved-size">${Math.round((b.final_html.length||0)/1024)} KB guardados</div>
+          </div>
+          <div class="html-saved-actions">
+            <button class="btn-html-action" onclick="downloadFinalHtml('${b.id}')">⬇ DESCARGAR</button>
+            <button class="btn-html-action danger" onclick="deleteFinalHtml('${b.id}')">✕</button>
+          </div>
+        </div>` : `
+        <div class="html-upload-zone" id="uploadZone_${b.id}"
+          ondragover="this.classList.add('drag-over');event.preventDefault()"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleHtmlDrop(event,'${b.id}')">
+          <input type="file" accept=".html" onchange="handleHtmlUpload(this,'${b.id}')">
+          <div class="html-upload-icon">📁</div>
+          <div class="html-upload-label">SUBIR HTML FINAL</div>
+          <div class="html-upload-hint">Arrastrá el archivo o hacé click · Solo archivos .html</div>
+        </div>`}
+    </div>
   `;
 }
 
@@ -727,31 +1042,371 @@ async function saveNotes(id) {
     if(idx>=0) allBriefings[idx].admin_notes=notes;
   } catch(e){showToast('Error al guardar nota',true);}
 }
+/* ══ CONFIRM DIALOG ══ */
+let confirmCallback = null;
+function showConfirm(icon, title, msg, okLabel, cb) {
+  document.getElementById('confirmIcon').textContent = icon;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmOkBtn').textContent = okLabel;
+  confirmCallback = cb;
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirmModal').classList.remove('open');
+  confirmCallback = null;
+}
+document.getElementById('confirmOkBtn').addEventListener('click', () => {
+  if (confirmCallback) confirmCallback();
+  closeConfirm();
+});
+
 async function deleteBriefing(id) {
-  if(!confirm('¿Seguro? Esta acción no se puede deshacer.')) return;
-  try {
-    await sbFetch(`briefings?id=eq.${id}`,{method:'DELETE',prefer:'return=minimal'});
-    allBriefings=allBriefings.filter(b=>b.id!==id);
-    selectedId=null;
-    renderList();
-    document.getElementById('detailPanel').innerHTML='<div class="detail-empty">Seleccioná un briefing para ver los detalles</div>';
-    showToast('✓ Briefing eliminado');
-  } catch(e){showToast('Error: '+e.message,true);}
+  const b = allBriefings.find(x=>x.id===id);
+  const name = displayName(b);
+  showConfirm('🗑', '¿Eliminar briefing?', `"${name}" — Esta acción no se puede deshacer.`, 'ELIMINAR', async () => {
+    try {
+      await sbFetch(`briefings?id=eq.${id}`,{method:'DELETE',prefer:'return=minimal'});
+      allBriefings = allBriefings.filter(b=>b.id!==id);
+      selectedId = null;
+      renderList();
+      document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">Seleccioná un briefing para ver los detalles</div>';
+      showToast('✓ Briefing eliminado');
+    } catch(e){ showToast('Error: '+e.message, true); }
+  });
 }
 
-/* ══ COPIAR PROMPT ══ */
-function copyPrompt(id) {
-  const b=allBriefings.find(x=>x.id===id); if(!b) return;
-  const isW=b.event_type==='casamiento', isQ=b.event_type==='quinceanera';
-  const typeLabel=TYPE_LABELS[b.event_type]||b.event_type;
-  let p=`Generá un sistema completo de invitación digital de ${typeLabel} con los siguientes datos.\nProducí los 4 archivos (index.html, dashboard.html, mesas.html, trivia.html) listos para usar.\n\n═══════════════════════════════════\nTIPO: ${typeLabel}\n═══════════════════════════════════\n`;
-  if(isW) p+=`\nPAREJA\n  Novia: ${b.bride_name||''}\n  Novio: ${b.groom_name||''}\n  Firma: ${b.couple_display||''}\n  Iniciales: ${b.initials||''}\n\nEVENTO\n  Fecha: ${b.event_date||''}\n  Hora: ${b.event_time||''}\n  Ceremonia: ${b.ceremony_venue||''}\n  Dir. ceremonia: ${b.ceremony_address||''}\n  Salón: ${b.reception_venue||''}\n  Dir. salón: ${b.reception_address||''}\n  Ciudad/País: ${b.city_country||''}\n  Dress code: ${b.dress_code||''}\n\nESTÉTICA\n  Tema: ${b.theme_code?'Tema '+b.theme_code:''}\n  Ajustes: ${b.theme_notes||''}\n  Música: ${b.music_url||''}\n\nHISTORIA\n  Se conocieron: ${b.story_met||''}\n  Primera cita: ${b.story_first_date||''}\n  Propuesta: ${b.story_proposal||''}\n\nMESAS\n  Cantidad: ${b.tables_count||''}\n  Capacidad: ${b.tables_capacity||''}\n  Mesa honor: ${b.tables_honor?'Sí':'No'}\n  Nombres: ${b.tables_names||''}\n`;
-  else if(isQ) p+=`\nFESTEJADA\n  Nombre: ${b.girl_name||''}\n  Título: ${b.girl_display||''}\n\nEVENTO\n  Fecha: ${b.party_date||''}\n  Hora: ${b.party_time||''}\n  Salón: ${b.party_venue||''}\n  Dirección: ${b.party_address||''}\n  Ciudad: ${b.party_city||''}\n`;
-  else p+=`\nEVENTO\n  Tipo: ${b.g_event_type||''}\n  Protagonista: ${b.g_name||b.g_company||''}\n  Título: ${b.g_display||''}\n  Fecha: ${b.g_date||''}\n  Hora: ${b.g_time||''}\n  Lugar: ${b.g_venue||''}\n  Dirección: ${b.g_address||''}\n  Ciudad: ${b.g_city||''}\n`;
-  if(isW && b.trivia?.length){ p+='\nTRIVIA\n'; b.trivia.forEach((t,i)=>p+=`  P${i+1}: ${t.q} | a) ${t.a} | b) ${t.b} | c) ${t.c} | d) ${t.d} | Correcta: ${t.ans}\n`); }
-  p+=`\nESTÉTICA\n  Tema: ${b.theme_code?'Tema '+b.theme_code:''}\n  Ajustes: ${b.theme_notes||''}\n  Música: ${b.music_url||''}\n\nTÉCNICO\n  URL: ${b.site_url||''}\n  Invitados: ${b.guests_count||''}\n  RSVP: ${b.wants_rsvp?'Sí':'No'}\n  País: ${b.country||'Argentina'}\n\nNOTAS\n  ${b.extra_notes||b.g_extra||'—'}\n═══════════════════════════════════`;
-  navigator.clipboard?.writeText(p).then(()=>showToast('✓ Prompt copiado — pegalo en Claude'));
+function confirmLimpiar() {
+  const hoy = new Date().toLocaleDateString('es-AR');
+  showConfirm('🧹', '¿Limpiar registros de prueba?',
+    `Se van a eliminar TODOS los briefings marcados como "nuevo" recibidos hoy (${hoy}). Los que tienen estado "en proceso", "completado" o "pausado" no se tocan.`,
+    'LIMPIAR', limpiarPruebas);
 }
+
+async function limpiarPruebas() {
+  const hoy = new Date().toISOString().slice(0,10);
+  const pruebas = allBriefings.filter(b => b.status === 'nuevo' && b.created_at?.startsWith(hoy));
+  if (!pruebas.length) { showToast('No hay registros de prueba de hoy para eliminar'); return; }
+  try {
+    for (const b of pruebas) {
+      await sbFetch(`briefings?id=eq.${b.id}`,{method:'DELETE',prefer:'return=minimal'});
+    }
+    allBriefings = allBriefings.filter(b => !(b.status==='nuevo' && b.created_at?.startsWith(hoy)));
+    selectedId = null;
+    renderList();
+    document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">Seleccioná un briefing para ver los detalles</div>';
+    showToast(`✓ ${pruebas.length} registros de prueba eliminados`);
+  } catch(e){ showToast('Error: '+e.message, true); }
+}
+
+/* ══ MODAL PROMPT ══ */
+function openPromptModal(id) {
+  const b = allBriefings.find(x=>x.id===id); if(!b) return;
+  document.getElementById('promptTextarea').value = buildPrompt(b);
+  document.getElementById('promptModal').classList.add('open');
+  document.getElementById('btnCopyPrompt').textContent = 'COPIAR Y PEGAR EN CLAUDE ✦';
+  document.getElementById('btnCopyPrompt').classList.remove('copied');
+}
+function closePromptModal() {
+  document.getElementById('promptModal').classList.remove('open');
+}
+function copyPromptFromModal() {
+  const text = document.getElementById('promptTextarea').value;
+  navigator.clipboard?.writeText(text).then(() => {
+    const btn = document.getElementById('btnCopyPrompt');
+    btn.textContent = '✓ COPIADO — PEGALO EN CLAUDE';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPIAR Y PEGAR EN CLAUDE ✦';
+      btn.classList.remove('copied');
+    }, 3000);
+  });
+}
+
+function buildPrompt(b) {
+  const isW = b.event_type==='casamiento', isQ = b.event_type==='quinceanera';
+  const typeLabel = TYPE_LABELS[b.event_type]||b.event_type;
+
+  let p = `Generá un sistema completo de invitación digital de ${typeLabel} con los siguientes datos.
+Producí los 4 archivos (index.html, dashboard.html, mesas.html, trivia.html) listos para usar.
+
+═══════════════════════════════════════════════
+NUEVA INVITACIÓN · ${typeLabel.toUpperCase()}
+═══════════════════════════════════════════════
+`;
+
+  if (isW) p += `
+PAREJA
+  Novia:          ${b.bride_name||''}
+  Novio:          ${b.groom_name||''}
+  Nombre corto:   ${b.couple_display||''}
+  Iniciales:      ${b.initials||''}
+
+EVENTO
+  Fecha:          ${b.event_date||''}
+  Hora:           ${b.event_time||''}
+  Ceremonia:      ${b.ceremony_venue||''}
+  Dir. ceremonia: ${b.ceremony_address||''}
+  Recepción:      ${b.reception_venue||''}
+  Dir. recepción: ${b.reception_address||''}
+  Ciudad/País:    ${b.city_country||''}
+  Dress code:     ${b.dress_code||''}
+
+HISTORIA
+  Cómo se conocieron: ${b.story_met||''}
+  Primera cita:       ${b.story_first_date||''}
+  La propuesta:       ${b.story_proposal||''}
+
+MESAS
+  Cantidad:       ${b.tables_count||''}
+  Capacidad:      ${b.tables_capacity||''}
+  Mesa de honor:  ${b.tables_honor?'Sí':'No'}
+  Nombres:        ${b.tables_names||''}
+`;
+
+  else if (isQ) p += `
+FESTEJADA
+  Nombre:         ${b.girl_name||''}
+  Título:         ${b.girl_display||''}
+
+EVENTO
+  Fecha:          ${b.party_date||''}
+  Hora:           ${b.party_time||''}
+  Salón:          ${b.party_venue||''}
+  Dirección:      ${b.party_address||''}
+  Ciudad:         ${b.party_city||''}
+
+FIESTA
+  Vals:           ${b.waltz_song||''}
+  Sorpresa:       ${b.surprise_dance||''}
+  Chambelanes:    ${b.vals_chambelanes||''}
+  Menú:           ${b.g_menu||''}
+`;
+
+  else p += `
+EVENTO
+  Tipo:           ${b.g_event_type||''}
+  Protagonista:   ${b.g_name||b.g_company||''}
+  Título:         ${b.g_display||''}
+  Fecha:          ${b.g_date||''}
+  Hora:           ${b.g_time||''}
+  Lugar:          ${b.g_venue||''}
+  Dirección:      ${b.g_address||''}
+  Ciudad:         ${b.g_city||''}
+`;
+
+  if (isW && b.trivia?.length) {
+    p += '\nTRIVIA\n';
+    b.trivia.forEach((t,i) => p += `  P${i+1}: ${t.q||''} | a) ${t.a||''} | b) ${t.b||''} | c) ${t.c||''} | d) ${t.d||''} | Correcta: ${t.ans||'a'}\n`);
+  }
+
+  p += `
+ESTÉTICA
+  Tema:           ${b.theme_code ? 'Tema '+b.theme_code : ''}
+  Ajustes:        ${b.theme_notes||''}
+  Música:         ${b.music_url||''}
+
+TÉCNICO
+  URL del sitio:  ${b.site_url||'https://casamiento.com'}
+  Invitados:      ${b.guests_count||''}
+  RSVP:           ${b.wants_rsvp?'Sí':'No'}
+  País:           ${b.country||'Argentina'}
+
+NOTAS ADICIONALES
+  ${b.extra_notes||b.g_extra||'—'}
+
+═══════════════════════════════════════════════`;
+
+  return p;
+}
+
+// Mantener compatibilidad con el botón viejo que tenía "copyPrompt"
+function copyPrompt(id) { openPromptModal(id); }
+
+/* ══ READ STATUS ══ */
+async function setReadStatus(id, status) {
+  try {
+    await sbFetch(`briefings?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({read_status:status}),prefer:'return=minimal'});
+    const idx = allBriefings.findIndex(b=>b.id===id);
+    if(idx>=0) allBriefings[idx].read_status = status;
+    renderList();
+    // Re-render detail to update button states
+    const b = allBriefings.find(x=>x.id===id);
+    if(b) renderDetail(b);
+    const labels = {unread:'Sin leer', read:'✓✓ Visto', working:'✓✓ Trabajando'};
+    showToast(`Marcado como: ${labels[status]||status}`);
+  } catch(e){ showToast('Error: '+e.message, true); }
+}
+
+/* ══ HTML UPLOAD ══ */
+async function handleHtmlUpload(input, id) {
+  const file = input.files[0]; if(!file) return;
+  if(!file.name.endsWith('.html')){ showToast('Solo archivos .html', true); return; }
+  const text = await file.text();
+  await saveFinalHtml(id, file.name, text);
+}
+function handleHtmlDrop(event, id) {
+  event.preventDefault();
+  const zone = document.getElementById('uploadZone_'+id);
+  if(zone) zone.classList.remove('drag-over');
+  const file = event.dataTransfer.files[0];
+  if(!file || !file.name.endsWith('.html')){ showToast('Solo archivos .html', true); return; }
+  file.text().then(text => saveFinalHtml(id, file.name, text));
+}
+async function saveFinalHtml(id, name, html) {
+  try {
+    showToast('Guardando HTML…');
+    await sbFetch(`briefings?id=eq.${id}`,{
+      method:'PATCH',
+      body:JSON.stringify({final_html:html, final_html_name:name}),
+      prefer:'return=minimal'
+    });
+    const idx = allBriefings.findIndex(b=>b.id===id);
+    if(idx>=0){ allBriefings[idx].final_html=html; allBriefings[idx].final_html_name=name; }
+    renderDetail(allBriefings.find(x=>x.id===id));
+    renderList();
+    showToast('✓ HTML guardado — '+name);
+  } catch(e){ showToast('Error al guardar: '+e.message, true); }
+}
+function downloadFinalHtml(id) {
+  const b = allBriefings.find(x=>x.id===id); if(!b?.final_html) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([b.final_html],{type:'text/html'}));
+  a.download = b.final_html_name || 'invitacion.html';
+  a.click();
+}
+async function deleteFinalHtml(id) {
+  try {
+    await sbFetch(`briefings?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({final_html:null,final_html_name:null}),prefer:'return=minimal'});
+    const idx = allBriefings.findIndex(b=>b.id===id);
+    if(idx>=0){ allBriefings[idx].final_html=null; allBriefings[idx].final_html_name=null; }
+    renderDetail(allBriefings.find(x=>x.id===id));
+    showToast('✓ HTML eliminado');
+  } catch(e){ showToast('Error: '+e.message, true); }
+}
+
+/* ══ TITLE & BELL BADGE ══ */
+function updatePageTitle(unread) {
+  document.title = unread > 0 ? `(${unread}) Bether Studio · Admin` : 'Bether Studio · Admin';
+}
+function updateBellBadge(unread) {
+  const bell = document.getElementById('bellBtn');
+  if(!bell) return;
+  if(unread > 0) bell.classList.add('has-new'); else bell.classList.remove('has-new');
+}
+
+/* ══ PUSH NOTIFICATIONS ══ */
+let notifEnabled = false;
+let realtimeSub = null;
+let prevCount = 0;
+
+async function toggleNotif() {
+  if (notifEnabled) {
+    disableNotif();
+  } else {
+    await enableNotif();
+  }
+}
+
+async function enableNotif() {
+  if (!('Notification' in window)) {
+    showToast('Tu navegador no soporta notificaciones', true); return;
+  }
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') {
+    showToast('Permiso de notificaciones denegado', true); return;
+  }
+  notifEnabled = true;
+  document.getElementById('bellBtn').classList.add('active');
+  showToast('🔔 Notificaciones activadas');
+
+  // Polling cada 30s para detectar nuevos briefings
+  prevCount = allBriefings.length;
+  startPolling();
+}
+
+function disableNotif() {
+  notifEnabled = false;
+  document.getElementById('bellBtn').classList.remove('active');
+  stopPolling();
+  showToast('🔕 Notificaciones desactivadas');
+}
+
+let pollingInterval = null;
+function startPolling() {
+  stopPolling();
+  pollingInterval = setInterval(async () => {
+    if (!notifEnabled) return;
+    try {
+      const fresh = await sbFetch('briefings?select=id,created_at,event_type,couple_display,girl_display,g_display,g_name,g_company,read_status&order=created_at.desc&limit=50');
+      const newOnes = fresh.filter(b => {
+        const existing = allBriefings.find(x=>x.id===b.id);
+        return !existing;
+      });
+      if (newOnes.length > 0) {
+        // Hay briefings nuevos!
+        newOnes.forEach(b => {
+          const name = b.couple_display||b.girl_display||b.g_display||b.g_name||b.g_company||'Nuevo cliente';
+          const label = TYPE_LABELS[b.event_type]||b.event_type;
+          fireNotification(`✦ Nuevo briefing — ${label}`, name);
+        });
+        // Recargar lista completa
+        await loadBriefings();
+      }
+    } catch(e) { console.warn('Polling error:', e); }
+  }, 30000); // cada 30 segundos
+}
+
+function stopPolling() {
+  if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
+}
+
+function fireNotification(title, body) {
+  if (!notifEnabled || Notification.permission !== 'granted') return;
+  const n = new Notification(title, {
+    body,
+    icon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="%230d0a14"/><text x="32" y="44" text-anchor="middle" font-size="36">✦</text></svg>',
+    badge: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="%23b66fff"/><text x="16" y="22" text-anchor="middle" font-size="18" fill="white">✦</text></svg>',
+    tag: 'bether-briefing',
+    renotify: true,
+    vibrate: [200, 100, 200],
+  });
+  n.onclick = () => { window.focus(); n.close(); };
+  // Sonido via AudioContext
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(523, ctx.currentTime);
+    osc.frequency.setValueAtTime(659, ctx.currentTime + 0.15);
+    osc.frequency.setValueAtTime(784, ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.65);
+  } catch(e) {}
+}
+
+/* ══ PWA MANIFEST (dinámico) ══ */
+(function setupPWA() {
+  const manifest = {
+    name: 'Bether Studio Admin',
+    short_name: 'Bether Admin',
+    start_url: window.location.href,
+    display: 'standalone',
+    background_color: '#0d0a14',
+    theme_color: '#b66fff',
+    icons: [{
+      src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="%230d0a14"/><text x="96" y="130" text-anchor="middle" font-size="120" fill="%23b66fff">✦</text></svg>',
+      sizes: '192x192', type: 'image/svg+xml'
+    }]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.getElementById('pwaManifest');
+  if (link) link.href = url;
+})();
 
 /* ══ EXPORT CSV ══ */
 function exportCSV() {
