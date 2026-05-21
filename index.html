@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Bether Studio · Briefing de Evento</title>
+<title>Bether Studio · Datos del Evento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -480,6 +480,64 @@ select option{background:#1a1228;color:var(--text);}
   100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%);}
 }
 
+/* ── PLAN SELECTOR ── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.4rem;}
+@media(max-width:480px){.plan-grid{grid-template-columns:1fr;gap:.5rem;}}
+.plan-opt{
+  border:1.5px solid var(--border);border-radius:14px;
+  padding:1.1rem .8rem;text-align:center;cursor:pointer;
+  transition:all .28s var(--spring);position:relative;
+  background:var(--surface);overflow:hidden;
+}
+.plan-opt::after{content:'';position:absolute;inset:0;border-radius:14px;opacity:0;transition:opacity .3s;}
+.plan-opt:hover{transform:translateY(-2px);}
+.plan-opt.selected{transform:translateY(-2px) scale(1.02);}
+.plan-basic::after{background:radial-gradient(circle,rgba(136,184,232,.12),transparent 70%);}
+.plan-basic:hover,.plan-basic.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(136,184,232,.12),0 8px 24px rgba(136,184,232,.15);}
+.plan-basic.selected::after{opacity:1;}
+.plan-premium::after{background:radial-gradient(circle,rgba(182,111,255,.15),transparent 70%);}
+.plan-premium:hover,.plan-premium.selected{border-color:var(--v1);box-shadow:0 0 0 3px rgba(182,111,255,.12),0 8px 24px rgba(182,111,255,.18);}
+.plan-premium.selected::after{opacity:1;}
+.plan-elite::after{background:radial-gradient(circle,rgba(255,157,77,.15),transparent 70%);}
+.plan-elite:hover,.plan-elite.selected{border-color:var(--o1);box-shadow:0 0 0 3px rgba(255,157,77,.12),0 8px 24px rgba(255,157,77,.18);}
+.plan-elite.selected::after{opacity:1;}
+.plan-badge{font-family:var(--display);font-size:.55rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
+.plan-basic  .plan-badge{color:var(--blue);}
+.plan-premium .plan-badge{background:linear-gradient(135deg,var(--v1),var(--p1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.plan-elite  .plan-badge{color:var(--o1);}
+.plan-icon{font-size:1.6rem;display:block;margin-bottom:.3rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));animation:iconFloat var(--fi,3s) ease-in-out infinite alternate;}
+.plan-desc{font-size:.68rem;color:var(--text-3);line-height:1.4;margin-top:.2rem;}
+.plan-check{position:absolute;top:.45rem;right:.45rem;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;animation:checkPop .35s var(--spring);}
+.plan-opt.selected .plan-check{display:flex;}
+.plan-check::after{content:'✓';font-size:.55rem;color:white;font-weight:800;}
+.plan-basic.selected  .plan-check{background:var(--blue);}
+.plan-premium.selected .plan-check{background:linear-gradient(135deg,var(--v1),var(--p1));}
+.plan-elite.selected  .plan-check{background:var(--o1);}
+
+/* ── TITLES CENTERED ── */
+.card-title{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.7rem);font-style:italic;color:var(--text);margin-bottom:.3rem;line-height:1.2;text-align:center;}
+.card-subtitle{font-size:.88rem;color:var(--text-2);line-height:1.65;margin-bottom:1.4rem;text-align:center;}
+.card-eyebrow{font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--v1);margin-bottom:.3rem;text-align:center;display:block;}
+
+/* ── DATE PICKER ── */
+input[type=date]{color-scheme:dark;}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(240deg);cursor:pointer;opacity:.7;}
+
+/* ── TOGGLE SI/NO ── */
+.toggle-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.3rem;}
+.toggle-label{font-family:var(--display);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-knob{position:absolute;inset:0;border-radius:12px;background:var(--border-2);transition:background .3s var(--ease);}
+.toggle-knob::before{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:white;transition:transform .3s var(--spring);box-shadow:0 2px 6px rgba(0,0,0,.3);}
+.toggle-switch input:checked + .toggle-knob{background:linear-gradient(135deg,var(--v1),var(--p1));}
+.toggle-switch input:checked + .toggle-knob::before{transform:translateX(20px);}
+.toggle-expand{overflow:hidden;max-height:0;transition:max-height .35s var(--ease),opacity .3s;opacity:0;}
+.toggle-expand.open{max-height:200px;opacity:1;}
+
+/* ── CUSTOM THEME ── */
+.custom-theme-box{border:1.5px dashed var(--border-2);border-radius:10px;padding:1rem;background:rgba(182,111,255,.03);animation:fadeUp .3s var(--ease);}
+
 /* ══ CONTACT SECTION ════════════════════════ */
 .contact-section{
   background:rgba(182,111,255,.05);
@@ -766,6 +824,7 @@ const THEMES=[
 ];
 
 /* ══ EVENTOS ═════════════════════════════════ */
+/* ══ EVENTOS ═════════════════════════════════ */
 const EVENTS=[
   {v:'casamiento', icon:'💍',name:'Casamiento',    sub:'Boda con sobre animado'},
   {v:'quinceanera',icon:'🌸',name:'Quinceañera',   sub:'XV años'},
@@ -778,217 +837,214 @@ const EVENTS=[
   {v:'otro',       icon:'✨',name:'Otro Evento',   sub:'Lo que sea'},
 ];
 
+const PLANS=[
+  {v:'basico',  cls:'plan-basic',  icon:'⭐',name:'BÁSICO',   desc:'La experiencia esencial'},
+  {v:'premium', cls:'plan-premium',icon:'💎',name:'PREMIUM',  desc:'Experiencia completa'},
+  {v:'elite',   cls:'plan-elite',  icon:'👑',name:'ELITE',    desc:'Todo incluido + extras'},
+];
+
+const EVENTS_WITH_THEMES=['casamiento','quinceanera'];
+
 /* ══ FIELD DEFS ══════════════════════════════ */
 const FD={
   casamiento:[
     {section:'La Pareja',fields:[
-      {id:'bride_name',  label:'Nombre de la novia',       ph:'Sofía García'},
-      {id:'groom_name',  label:'Nombre del novio',         ph:'Andrés López'},
-      {id:'couple_display',label:'Firma de la invitación', ph:'Sofía & Andrés',hint:'Cómo van a aparecer en el título',wide:true},
-      {id:'initials',    label:'Iniciales para el sello',  ph:'S & A'},
+      {id:'bride_name',  label:'Nombre de la novia', ph:'Sofía García'},
+      {id:'groom_name',  label:'Nombre del novio',   ph:'Andrés López'},
+      {id:'initials',    label:'Iniciales para el sello', ph:'S & A'},
     ]},
     {section:'El Evento',fields:[
-      {id:'event_date',       label:'Fecha',                    ph:'15 de noviembre de 2026'},
-      {id:'event_time',       label:'Hora',                     ph:'19:00 hs'},
-      {id:'ceremony_venue',   label:'Lugar de la ceremonia',    ph:'Iglesia Santa Ana',wide:true},
-      {id:'ceremony_address', label:'Dirección de la ceremonia',ph:'Av. Santa Ana 1234, CABA',wide:true},
-      {id:'reception_venue',  label:'Nombre del salón',         ph:'Hacienda Villa Real',wide:true},
-      {id:'reception_address',label:'Dirección del salón',      ph:'Ruta 2 Km 40, Cañuelas',wide:true},
-      {id:'city_country',     label:'Ciudad y país',            ph:'Buenos Aires, Argentina'},
-      {id:'dress_code',       label:'Dress code',               ph:'Formal / Cocktail / Sin restricción'},
+      {id:'event_date',       label:'Fecha', date:true},
+      {id:'event_time',       label:'Hora',  ph:'19:00 hs'},
+      {id:'ceremony_venue',   label:'Lugar de la ceremonia',  ph:'Iglesia Santa Ana',wide:true},
+      {id:'ceremony_address', label:'Dirección ceremonia',    ph:'Av. Santa Ana 1234, CABA',wide:true},
+      {id:'reception_venue',  label:'Nombre del salón',       ph:'Hacienda Villa Real',wide:true},
+      {id:'reception_address',label:'Dirección del salón',    ph:'Ruta 2 Km 40, Cañuelas',wide:true},
+      {id:'city_country',     label:'Ciudad y país',          ph:'Buenos Aires, Argentina'},
+      {id:'dress_code',       label:'Dress code', toggle:true},
     ]},
     {section:'Historia',fields:[
-      {id:'story_met',       label:'¿Cómo se conocieron?',     ph:'Nos conocimos en...', ta:true,wide:true,hint:'Podés escribir "INVENTAR" y lo hacemos nosotros'},
-      {id:'story_first_date',label:'¿Cuál fue su primera cita?',ph:'La primera cita fue...',ta:true,wide:true},
-      {id:'story_proposal',  label:'¿Cómo fue la propuesta?', ph:'La propuesta fue...',ta:true,wide:true},
+      {id:'story_met',       label:'¿Cómo se conocieron?',       ph:'Nos conocimos en...',ta:true,wide:true,hint:'Podés escribir "INVENTAR" y lo hacemos nosotros'},
+      {id:'story_first_date',label:'¿Cuál fue su primera cita?', ph:'La primera cita fue...',ta:true,wide:true},
+      {id:'story_proposal',  label:'¿Cómo fue la propuesta?',    ph:'La propuesta fue...',ta:true,wide:true},
     ]},
     {section:'Mesas',fields:[
-      {id:'tables_count',   label:'Cantidad de mesas',    ph:'10',type:'number'},
-      {id:'tables_capacity',label:'Lugares por mesa',     ph:'10',type:'number'},
-      {id:'tables_honor',   label:'¿Mesa de honor?',      sel:['— Elegir —','Sí','No']},
-      {id:'tables_names',   label:'Nombres de las mesas', ph:'Mesa 1, Mesa 2... o Mesa Rosas, Mesa Jazmín...',wide:true},
+      {id:'tables_count',   label:'Cantidad de mesas',  ph:'10',type:'number'},
+      {id:'tables_capacity',label:'Lugares por mesa',   ph:'10',type:'number'},
+      {id:'tables_honor',   label:'¿Mesa de honor?',    sel:['— Elegir —','Sí','No']},
+      {id:'tables_names',   label:'Nombres de las mesas',ph:'Mesa 1, Mesa 2 / Mesa Rosas...',wide:true},
     ]},
     {section:'Trivia',trivia:true},
   ],
   quinceanera:[
-    {section:'La Festejada',fields:[
-      {id:'g_name',   label:'Nombre completo',         ph:'Valentina García'},
-      {id:'g_display',label:'Título de la invitación', ph:'Los XV de Valentina',wide:true},
+    {section:'El/La Homenajeado/a',fields:[
+      {id:'g_name',label:'Nombre completo', ph:'Valentina García'},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',   label:'Fecha',          ph:'20 de septiembre de 2026'},
-      {id:'g_time',   label:'Hora',           ph:'20:00 hs'},
-      {id:'g_venue',  label:'Nombre del salón',ph:'Salón Versailles',wide:true},
-      {id:'g_address',label:'Dirección',      ph:'Av. Corrientes 1234',wide:true},
-      {id:'g_city',   label:'Ciudad y país',  ph:'Buenos Aires'},
+      {id:'g_date',      label:'Fecha', date:true},
+      {id:'g_time',      label:'Hora',  ph:'20:00 hs'},
+      {id:'g_venue',     label:'Nombre del salón',ph:'Salón Versailles',wide:true},
+      {id:'g_address',   label:'Dirección',       ph:'Av. Corrientes 1234',wide:true},
+      {id:'g_city',      label:'Ciudad y país',   ph:'Buenos Aires, Argentina'},
+      {id:'g_dress_code',label:'Dress code', toggle:true},
     ]},
     {section:'Detalles de la Fiesta',fields:[
-      {id:'g_theme_style',label:'Estilo',sel:['— Elegir —','Princess','Glamour / Lujo','Boho / Natural','París Romántico','Tropical','Moderno','Otro']},
-      {id:'g_dress_code', label:'Dress code', ph:'Formal / Sin restricción'},
-      {id:'waltz_song',   label:'Canción del vals',ph:'Nombre del tema / artista',wide:true},
-      {id:'surprise_dance',label:'¿Baile sorpresa?',ph:'Sí, con los chambelanes / No',wide:true},
+      {id:'g_theme_style',  label:'Temática',sel:['— Elegir —','Princess','Glamour / Lujo','Boho / Natural','París Romántico','Tropical','Moderno','Otro'],otherExpand:true},
+      {id:'waltz_song',     label:'Canción del vals',ph:'Nombre del tema / artista',wide:true},
+      {id:'surprise_dance', label:'¿Baile sorpresa?', ph:'Sí, con los chambelanes / No',wide:true},
       {id:'vals_chambelanes',label:'Chambelanes',ph:'14',type:'number'},
-      {id:'g_menu',       label:'Menú',       ph:'Cena, torta, gaseosas...'},
-      {id:'g_extra',      label:'Notas extra',ta:true,wide:true},
+      {id:'g_rsvp_date',    label:'Confirmar antes del <span class=\"hint\">— opcional</span>', ph:'Ej: 5 de agosto'},
+      {id:'g_extra',        label:'Notas adicionales',ta:true,wide:true},
     ]},
   ],
   cumple_inf:[
-    {section:'El Festejado/a',fields:[
-      {id:'g_name',   label:'Nombre',                 ph:'Mateo / Martina'},
-      {id:'g_age',    label:'¿Cuántos años cumple?',  ph:'5',type:'number'},
-      {id:'g_display',label:'Título de la invitación',ph:'¡Mateo cumple 5!',wide:true},
+    {section:'El/La Homenajeado/a',fields:[
+      {id:'g_name',label:'Nombre',                ph:'Mateo / Martina'},
+      {id:'g_age', label:'¿Cuántos años cumple?', ph:'5',type:'number'},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',       label:'Fecha',        ph:'15 de agosto de 2026'},
-      {id:'g_time',       label:'Hora',         ph:'16:00 hs'},
-      {id:'g_venue',      label:'Lugar',        ph:'Salón / Casa',wide:true},
-      {id:'g_address',    label:'Dirección',    wide:true},
-      {id:'g_city',       label:'Ciudad'},
-      {id:'g_dress_code', label:'Dress code / Temática de ropa',ph:'Vengan de superhéroes...'},
+      {id:'g_date',      label:'Fecha', date:true},
+      {id:'g_time',      label:'Hora',  ph:'16:00 hs'},
+      {id:'g_venue',     label:'Lugar', ph:'Salón / Casa',wide:true},
+      {id:'g_address',   label:'Dirección',wide:true},
+      {id:'g_city',      label:'Ciudad', ph:'Buenos Aires'},
+      {id:'g_dress_code',label:'Dress code',toggle:true},
     ]},
     {section:'Temática y Detalles',fields:[
-      {id:'g_theme_style',label:'Temática',sel:['— Elegir —','Princesas / Disney','Superhéroes','Dinosaurios','Unicornios','Animales','Espacio / Astronautas','Circo','Piratas','Otro']},
-      {id:'g_activities', label:'Actividades',ph:'Pintacaras, cama elástica, show...',wide:true},
-      {id:'g_menu',       label:'Menú',       ph:'Picada infantil, torta...'},
-      {id:'g_rsvp_date',  label:'Confirmar antes del',ph:'5 de agosto'},
+      {id:'g_theme_style',label:'Temática',sel:['— Elegir —','Princesas / Disney','Superhéroes','Dinosaurios','Unicornios','Animales','Espacio','Circo','Piratas','Otro'],otherExpand:true},
+      {id:'g_rsvp_date',  label:'Confirmar antes del <span class=\"hint\">— opcional</span>',ph:'Ej: 5 de agosto'},
       {id:'g_extra',      label:'Notas adicionales',ta:true,wide:true},
     ]},
   ],
   cumple_adu:[
-    {section:'El Festejado/a',fields:[
-      {id:'g_name',   label:'Nombre completo',          ph:'Marcela López'},
-      {id:'g_age',    label:'¿Qué cumpleaños festeja?', ph:'40',type:'number'},
-      {id:'g_display',label:'Título de la invitación',  ph:'Los 40 de Marcela',wide:true},
+    {section:'El/La Homenajeado/a',fields:[
+      {id:'g_name',label:'Nombre completo',         ph:'Marcela López'},
+      {id:'g_age', label:'¿Qué cumpleaños festeja?',ph:'40',type:'number'},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',       label:'Fecha',        ph:'20 de octubre de 2026'},
-      {id:'g_time',       label:'Hora',         ph:'21:00 hs'},
-      {id:'g_venue',      label:'Lugar',        wide:true},
-      {id:'g_address',    label:'Dirección',    wide:true},
-      {id:'g_city',       label:'Ciudad'},
-      {id:'g_dress_code', label:'Dress code',   ph:'Formal / Casual / Temático'},
+      {id:'g_date',      label:'Fecha', date:true},
+      {id:'g_time',      label:'Hora',  ph:'21:00 hs'},
+      {id:'g_venue',     label:'Lugar', wide:true},
+      {id:'g_address',   label:'Dirección',wide:true},
+      {id:'g_city',      label:'Ciudad',ph:'Buenos Aires'},
+      {id:'g_dress_code',label:'Dress code',toggle:true},
     ]},
     {section:'Detalles',fields:[
-      {id:'g_theme_style',label:'Estilo',sel:['— Elegir —','Glamour / Lujo','Décadas (80s, 90s...)','Tropical / Playa','Hollywood / Red Carpet','Minimalista moderno','Años 20 / Gatsby','Otro']},
-      {id:'g_menu',       label:'Menú',     ph:'Cena / Coctel / Parrilla...'},
-      {id:'g_music',      label:'Música',   ph:'DJ, banda, música en vivo...'},
-      {id:'g_surprise',   label:'¿Sorpresa?',ph:'Show, video, discursos...'},
-      {id:'g_rsvp_date',  label:'Confirmar antes del'},
-      {id:'g_extra',      label:'Notas',    ta:true,wide:true},
+      {id:'g_theme_style',label:'Estilo',sel:['— Elegir —','Glamour / Lujo','Décadas (80s, 90s...)','Tropical / Playa','Hollywood','Minimalista moderno','Años 20 / Gatsby','Otro'],otherExpand:true},
+      {id:'g_music',   label:'Música',          ph:'DJ, banda, música en vivo...'},
+      {id:'g_surprise',label:'¿Habrá sorpresa?',ph:'Show, video, discursos...'},
+      {id:'g_rsvp_date',label:'Confirmar antes del <span class=\"hint\">— opcional</span>'},
+      {id:'g_extra',   label:'Notas adicionales',ta:true,wide:true},
     ]},
   ],
   bautismo:[
-    {section:'El Bebé',fields:[
-      {id:'g_name',      label:'Nombre del bebé',   ph:'Emilia / Tomás'},
-      {id:'g_display',   label:'Título',            ph:'El bautismo de Emilia',wide:true},
+    {section:'El/La Homenajeado/a',fields:[
+      {id:'g_name',      label:'Nombre del bebé',     ph:'Emilia / Tomás'},
       {id:'g_parents',   label:'Nombres de los papás',ph:'Lucía y Martín',wide:true},
-      {id:'g_godparents',label:'Padrinos',          ph:'Ana y Carlos',wide:true},
+      {id:'g_godparents',label:'Padrinos',            ph:'Ana y Carlos',wide:true},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',       label:'Fecha'},
-      {id:'g_time',       label:'Hora de la misa',  ph:'11:00 hs'},
-      {id:'g_church',     label:'Iglesia',          wide:true},
+      {id:'g_date',       label:'Fecha', date:true},
+      {id:'g_time',       label:'Hora de la misa',ph:'11:00 hs'},
+      {id:'g_church',     label:'Iglesia',         wide:true},
       {id:'g_church_addr',label:'Dirección iglesia',wide:true},
-      {id:'g_venue',      label:'Salón posterior',  wide:true},
-      {id:'g_address',    label:'Dirección salón',  wide:true},
-      {id:'g_city',       label:'Ciudad'},
-      {id:'g_menu',       label:'Menú'},
-      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+      {id:'g_venue',      label:'Salón posterior', wide:true},
+      {id:'g_address',    label:'Dirección salón', wide:true},
+      {id:'g_city',       label:'Ciudad',          ph:'Buenos Aires'},
+      {id:'g_rsvp_date',  label:'Confirmar antes del <span class=\"hint\">— opcional</span>'},
+      {id:'g_extra',      label:'Notas adicionales',ta:true,wide:true},
     ]},
   ],
   comunion:[
-    {section:'El Festejado/a',fields:[
-      {id:'g_name',   label:'Nombre completo',  ph:'Valentina / Santiago'},
-      {id:'g_display',label:'Título',           ph:'La Primera Comunión de Valentina',wide:true},
+    {section:'El/La Homenajeado/a',fields:[
+      {id:'g_name',   label:'Nombre completo',     ph:'Valentina / Santiago'},
       {id:'g_parents',label:'Nombres de los papás',ph:'Lucía y Martín',wide:true},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',       label:'Fecha'},
-      {id:'g_time',       label:'Hora de la misa',ph:'11:00 hs'},
-      {id:'g_church',     label:'Iglesia',       wide:true},
-      {id:'g_church_addr',label:'Dir. iglesia',  wide:true},
-      {id:'g_venue',      label:'Salón',         wide:true},
-      {id:'g_address',    label:'Dir. salón',    wide:true},
-      {id:'g_city',       label:'Ciudad'},
-      {id:'g_dress_code', label:'Dress code',    ph:'Blanco y dorado / Sin restricción'},
-      {id:'g_menu',       label:'Menú'},
-      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+      {id:'g_date',       label:'Fecha', date:true},
+      {id:'g_time',       label:'Hora de la misa', ph:'11:00 hs'},
+      {id:'g_church',     label:'Iglesia',          wide:true},
+      {id:'g_church_addr',label:'Dirección iglesia',wide:true},
+      {id:'g_venue',      label:'Salón',            wide:true},
+      {id:'g_address',    label:'Dirección salón',  wide:true},
+      {id:'g_city',       label:'Ciudad',           ph:'Buenos Aires'},
+      {id:'g_dress_code', label:'Dress code',       toggle:true},
+      {id:'g_rsvp_date',  label:'Confirmar antes del <span class=\"hint\">— opcional</span>'},
+      {id:'g_extra',      label:'Notas adicionales',ta:true,wide:true},
     ]},
   ],
   baby_shower:[
     {section:'La Familia',fields:[
-      {id:'g_mom',     label:'Nombre de la mamá',  ph:'Camila'},
-      {id:'g_dad',     label:'Nombre del papá',    ph:'Juan'},
+      {id:'g_mom',      label:'Nombre de la mamá', ph:'Camila'},
+      {id:'g_dad',      label:'Nombre del papá',   ph:'Juan'},
       {id:'g_baby_name',label:'Nombre del bebé',   ph:'Nombre o "es sorpresa"',wide:true},
-      {id:'g_display', label:'Título',             ph:'Baby Shower de Camila',wide:true},
-      {id:'g_organizer',label:'¿Quién organiza?',  ph:'Las amigas de / La familia de...',wide:true},
+      {id:'g_organizer',label:'¿Quién organiza?',  ph:'Las amigas de...',wide:true},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_date',   label:'Fecha',   ph:'10 de agosto'},
-      {id:'g_time',   label:'Hora',    ph:'16:00 hs'},
-      {id:'g_venue',  label:'Lugar',   wide:true},
+      {id:'g_date',   label:'Fecha', date:true},
+      {id:'g_time',   label:'Hora',  ph:'16:00 hs'},
+      {id:'g_venue',  label:'Lugar', wide:true},
       {id:'g_address',label:'Dirección',wide:true},
-      {id:'g_city',   label:'Ciudad'},
+      {id:'g_city',   label:'Ciudad',  ph:'Buenos Aires'},
       {id:'g_gender', label:'¿Revelación de género?',ph:'Sí / No / Ya saben'},
     ]},
     {section:'Detalles',fields:[
       {id:'g_theme_style',label:'Paleta / Temática',sel:['— Elegir —','Celeste / Nube (nene)','Rosa / Flores (nena)','Neutro / Beige / Sage','Colores vibrantes','Temático','Revelación de género']},
       {id:'g_registry',   label:'Mesa de regalos',  ph:'Link o descripción'},
-      {id:'g_menu',       label:'Menú'},
-      {id:'g_activities', label:'Actividades / Juegos'},
-      {id:'g_extra',      label:'Notas',ta:true,wide:true},
+      {id:'g_rsvp_date',  label:'Confirmar antes del <span class=\"hint\">— opcional</span>'},
+      {id:'g_extra',      label:'Notas adicionales', ta:true,wide:true},
     ]},
   ],
   corporativo:[
     {section:'La Empresa',fields:[
-      {id:'g_company',    label:'Nombre de la empresa',  wide:true},
-      {id:'g_display',    label:'Título del evento',     ph:'Lanzamiento X / Cena de Fin de Año',wide:true},
+      {id:'g_company',    label:'Nombre de la empresa',wide:true},
+      {id:'g_display',    label:'Título del evento',  ph:'Lanzamiento X / Cena de Fin de Año',wide:true},
       {id:'g_contact',    label:'Contacto interno'},
-      {id:'g_brand_color',label:'Color de marca',        ph:'#1A73E8 / Azul corporativo'},
+      {id:'g_brand_color',label:'Color de marca',     ph:'#1A73E8 / Azul corporativo'},
     ]},
     {section:'El Evento',fields:[
-      {id:'g_event_type', label:'Tipo',         ph:'Conferencia / Lanzamiento / Cena'},
-      {id:'g_date',       label:'Fecha'},
+      {id:'g_event_type', label:'Tipo de evento', ph:'Conferencia / Lanzamiento / Cena'},
+      {id:'g_date',       label:'Fecha', date:true},
       {id:'g_time',       label:'Hora'},
-      {id:'g_venue',      label:'Lugar',        wide:true},
-      {id:'g_address',    label:'Dirección',    wide:true},
-      {id:'g_city',       label:'Ciudad / País'},
-      {id:'g_dress_code', label:'Dress code',   ph:'Business / Formal'},
+      {id:'g_venue',      label:'Lugar',      wide:true},
+      {id:'g_address',    label:'Dirección',  wide:true},
+      {id:'g_city',       label:'Ciudad / País',ph:'Buenos Aires, Argentina'},
+      {id:'g_dress_code', label:'Dress code', toggle:true},
     ]},
     {section:'Detalles',fields:[
       {id:'g_theme_style',label:'Tono visual',sel:['— Elegir —','Corporativo premium / Oscuro','Moderno / Minimalista','Tecnológico / Futurista','Cálido / Humano','Seguir identidad de marca']},
-      {id:'g_agenda',     label:'Agenda breve', ta:true,ph:'19:00 Bienvenida\n19:30 Presentación...',wide:true},
+      {id:'g_agenda',     label:'Agenda breve',ta:true,ph:'19:00 Bienvenida...',wide:true},
       {id:'g_speakers',   label:'Oradores / Invitados especiales',wide:true},
-      {id:'g_rsvp_date',  label:'Confirmar antes del'},
+      {id:'g_rsvp_date',  label:'Confirmar antes del <span class=\"hint\">— opcional</span>'},
       {id:'g_extra',      label:'Info adicional',ta:true,wide:true},
     ]},
   ],
   otro:[
     {section:'El Evento',fields:[
-      {id:'g_event_type',label:'¿Qué tipo de evento es?',ph:'Aniversario / Graduación / Reunión...'},
-      {id:'g_display',   label:'Título de la invitación',ph:'Cómo va a aparecer',wide:true},
+      {id:'g_event_type',label:'¿Qué tipo de evento es?',ph:'Aniversario / Graduación...'},
       {id:'g_name',      label:'Protagonista(s)'},
-      {id:'g_date',      label:'Fecha'},
+      {id:'g_date',      label:'Fecha', date:true},
       {id:'g_time',      label:'Hora'},
-      {id:'g_venue',     label:'Lugar',  wide:true},
-      {id:'g_address',   label:'Dirección',wide:true},
-      {id:'g_city',      label:'Ciudad'},
-      {id:'g_dress_code',label:'Dress code'},
+      {id:'g_venue',     label:'Lugar',      wide:true},
+      {id:'g_address',   label:'Dirección',  wide:true},
+      {id:'g_city',      label:'Ciudad',     ph:'Buenos Aires'},
+      {id:'g_dress_code',label:'Dress code', toggle:true},
       {id:'g_extra',     label:'Contanos todo para crear la invitación perfecta',ta:true,wide:true,hint:'Historia, detalles, referencias de estilo...'},
     ]},
   ],
 };
 
 /* ══ STATE ═══════════════════════════════════ */
-let state={eventType:null,currentStep:0,data:{},
+let state={eventType:null,currentStep:0,data:{plan:''},
   trivia:Array.from({length:10},()=>({q:'',a:'',b:'',c:'',d:'',ans:'a'}))};
 
 function getSteps(t){
   if(!t) return['Tipo'];
-  return['Tipo',...(FD[t]||[]).map(s=>s.section),'Estética','Técnico'];
+  const secs=(FD[t]||[]).map(s=>s.section);
+  const hasTheme=EVENTS_WITH_THEMES.includes(t);
+  return['Tipo',...secs,hasTheme?'Estética':'Personalizado','Cierre'];
 }
 
-/* ══ INIT ════════════════════════════════════ */
 function init(){renderStep(0);}
 
 function renderStep(step){
@@ -997,22 +1053,21 @@ function renderStep(step){
   const area=document.getElementById('formArea');
   area.innerHTML='';
   const steps=getSteps(state.eventType);
-
   if(step===0){ area.innerHTML=renderType(); }
-  else if(step===steps.length-1){ area.innerHTML=renderTécnico(); }
-  else if(step===steps.length-2){ area.innerHTML=renderEstética(); }
-  else{
+  else if(step===steps.length-1){ area.innerHTML=renderCierre(); }
+  else if(step===steps.length-2){
+    if(EVENTS_WITH_THEMES.includes(state.eventType)) area.innerHTML=renderEstética();
+    else area.innerHTML=renderPersonalizado();
+  } else {
     const sec=FD[state.eventType]?.[step-1];
     if(sec) area.innerHTML=renderSection(sec,step);
   }
-
   requestAnimationFrame(()=>{
     document.querySelectorAll('.form-card').forEach((c,i)=>
       setTimeout(()=>c.classList.add('vis'),i*80));
-    // Stagger float timing per icon so they don't all move in sync
-    document.querySelectorAll('.event-icon').forEach((ic,i)=>{
-      ic.style.setProperty('--fi', (2.4 + i * 0.35)+'s');
-      ic.style.animationDelay = -(i * 0.4)+'s';
+    document.querySelectorAll('.event-icon,.plan-icon').forEach((ic,i)=>{
+      ic.style.setProperty('--fi',(2.4+i*.35)+'s');
+      ic.style.animationDelay=-(i*.4)+'s';
     });
   });
   restoreData();
@@ -1031,11 +1086,9 @@ function updateProgress(){
   }).join('');
 }
 
-/* ══ STEP 0 ══════════════════════════════════ */
 function renderType(){
   const opts=EVENTS.map(e=>`
-    <label class="event-opt ${state.eventType===e.v?'selected':''}"
-      onclick="selEvent('${e.v}',this,event)">
+    <label class="event-opt ${state.eventType===e.v?'selected':''}" onclick="selEvent('${e.v}',this,event)">
       <input type="radio" name="evt" value="${e.v}">
       <span class="event-icon">${e.icon}</span>
       <div class="event-name">${e.name}</div>
@@ -1043,12 +1096,22 @@ function renderType(){
       <div class="event-check"></div>
     </label>`).join('');
 
+  const planOpts=PLANS.map(p=>`
+    <label class="plan-opt ${p.cls} ${state.data.plan===p.v?'selected':''}" onclick="selPlan('${p.v}',this)">
+      <span class="plan-icon">${p.icon}</span>
+      <span class="plan-badge">${p.name}</span>
+      <p class="plan-desc">${p.desc}</p>
+      <div class="plan-check"></div>
+    </label>`).join('');
+
   return`<div class="form-card">
-    <div class="card-eyebrow">Paso 1</div>
-    <div class="card-title">¿Qué tipo de evento es?</div>
-    <div class="card-subtitle">Elegí y el formulario se adapta automáticamente con las preguntas exactas para tu evento.</div>
+    <div class="card-eyebrow">Paso 1 de ${getSteps(state.eventType||'casamiento').length-1}</div>
+    <div class="card-title">Datos del Evento</div>
+    <div class="card-subtitle">Elegí el tipo de evento y el plan. El formulario se adapta automáticamente.</div>
     <div class="card-rule"></div>
     <div class="event-grid">${opts}</div>
+    <div style="font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v1);text-align:center;margin:.4rem 0 .9rem;">PLAN ELEGIDO</div>
+    <div class="plan-grid">${planOpts}</div>
     <div class="contact-section">
       <div class="section-label">Tus datos de contacto</div>
       <div class="field-row">
@@ -1057,7 +1120,7 @@ function renderType(){
         <div class="field"><label>Tu email *</label>
           <input type="email" id="f_contact_email" placeholder="maria@email.com"></div>
       </div>
-      <div class="field"><label>WhatsApp <span class="hint">— opcional, para coordinar</span></label>
+      <div class="field"><label>WhatsApp <span class="hint">— opcional</span></label>
         <input type="tel" id="f_contact_phone" placeholder="+54 11 1234-5678"></div>
     </div>
     <div class="btn-row">
@@ -1070,38 +1133,34 @@ function selEvent(type,el,ev){
   state.eventType=type;
   document.querySelectorAll('.event-opt').forEach(e=>e.classList.remove('selected'));
   el.classList.add('selected');
-  // Spark effect
   const spark=document.createElement('div');
   spark.className='spark';
   const rect=el.getBoundingClientRect();
-  spark.style.cssText=`left:${ev.clientX-rect.left}px;top:${ev.clientY-rect.top}px;
-    background:radial-gradient(circle,rgba(182,111,255,.5),transparent);transform-origin:center;`;
+  spark.style.cssText=`left:${ev.clientX-rect.left}px;top:${ev.clientY-rect.top}px;background:radial-gradient(circle,rgba(182,111,255,.5),transparent);transform-origin:center;`;
   el.appendChild(spark);
   setTimeout(()=>spark.remove(),500);
+  const ey=document.querySelector('.card-eyebrow');
+  if(ey) ey.textContent=`Paso 1 de ${getSteps(type).length-1}`;
+}
+
+function selPlan(plan,el){
+  state.data.plan=plan;
+  document.querySelectorAll('.plan-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
 }
 
 function nextFromType(){
   if(!state.eventType){showToast('Elegí un tipo de evento ✨',true);return;}
+  if(!state.data.plan){showToast('Elegí un plan ⭐',true);return;}
   saveData();
   if(!state.data.contact_email){showToast('Tu email es obligatorio 📧',true);return;}
   renderStep(1);
 }
 
-/* ══ SECCIÓN DINÁMICA ════════════════════════ */
 function renderSection(sec,step){
   const steps=getSteps(state.eventType);
-  const fields=(sec.fields||[]).map(f=>{
-    const cls=f.wide?'style="grid-column:1/-1"':'';
-    if(f.ta) return`<div class="field" ${cls}><label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>
-      <textarea id="f_${f.id}" placeholder="${f.ph||''}">${state.data[f.id]||''}</textarea></div>`;
-    if(f.sel) return`<div class="field" ${cls}><label>${f.label}</label>
-      <select id="f_${f.id}">${f.sel.map(o=>`<option ${state.data[f.id]===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
-    return`<div class="field" ${cls}><label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>
-      <input type="${f.type||'text'}" id="f_${f.id}" placeholder="${f.ph||''}" value="${state.data[f.id]||''}"></div>`;
-  }).join('');
-
+  const fields=(sec.fields||[]).map(f=>renderField(f)).join('');
   const triviaHtml=sec.trivia?renderTrivia():'';
-
   return`<div class="form-card">
     <div class="card-eyebrow">Paso ${step} de ${steps.length-1}</div>
     <div class="card-title">${sec.section}</div>
@@ -1112,10 +1171,60 @@ function renderSection(sec,step){
   </div>`;
 }
 
+function renderField(f){
+  const cls=f.wide?'style="grid-column:1/-1"':'';
+  const lbl=`<label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>`;
+  if(f.date) return`<div class="field" ${cls}>${lbl}<input type="date" id="f_${f.id}" value="${state.data[f.id]||''}"></div>`;
+  if(f.toggle){
+    const isOpen=state.data[f.id]&&state.data[f.id]!=='no';
+    return`<div class="field" ${cls}>
+      <div class="toggle-row">
+        <span class="toggle-label">${f.label}</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="f_${f.id}_toggle" ${isOpen?'checked':''}
+            onchange="toggleExpand('${f.id}',this.checked)">
+          <span class="toggle-knob"></span>
+        </label>
+        <span style="font-size:.72rem;color:var(--text-3);" id="f_${f.id}_label">${isOpen?'SÍ':'NO'}</span>
+      </div>
+      <div class="toggle-expand ${isOpen?'open':''}" id="f_${f.id}_expand">
+        <input type="text" id="f_${f.id}" placeholder="Especificá el dress code..." value="${state.data[f.id]&&state.data[f.id]!=='no'?state.data[f.id]:''}">
+      </div>
+    </div>`;
+  }
+  if(f.sel){
+    const isOther=state.data[f.id]==='Otro';
+    return`<div class="field" ${cls}>${lbl}
+      <select id="f_${f.id}" onchange="handleSelOther('${f.id}',this.value,${!!f.otherExpand})">
+        ${f.sel.map(o=>`<option ${state.data[f.id]===o?'selected':''}>${o}</option>`).join('')}
+      </select>
+      ${f.otherExpand?`<div class="toggle-expand ${isOther?'open':''}" id="f_${f.id}_other" style="margin-top:.5rem;">
+        <input type="text" id="f_${f.id}_custom" placeholder="Describí la temática..." value="${state.data[f.id+'_custom']||''}">
+      </div>`:''}
+    </div>`;
+  }
+  if(f.ta) return`<div class="field" ${cls}>${lbl}<textarea id="f_${f.id}" placeholder="${f.ph||''}">${state.data[f.id]||''}</textarea></div>`;
+  return`<div class="field" ${cls}>${lbl}<input type="${f.type||'text'}" id="f_${f.id}" placeholder="${f.ph||''}" value="${state.data[f.id]||''}"></div>`;
+}
+
+function toggleExpand(id,open){
+  const exp=document.getElementById('f_'+id+'_expand');
+  const lbl=document.getElementById('f_'+id+'_label');
+  if(exp) exp.classList.toggle('open',open);
+  if(lbl) lbl.textContent=open?'SÍ':'NO';
+  if(!open){const inp=document.getElementById('f_'+id);if(inp)inp.value='no';state.data[id]='no';}
+}
+
+function handleSelOther(id,val,hasOther){
+  if(!hasOther) return;
+  const other=document.getElementById('f_'+id+'_other');
+  if(other) other.classList.toggle('open',val==='Otro');
+}
+
 function renderTrivia(){
-  return`<div class="card-eyebrow" style="margin-top:1.2rem;">Trivia</div>
-  <p style="font-size:.85rem;color:var(--text-2);margin:.3rem 0 1rem;line-height:1.65;">
-    10 preguntas sobre la pareja. Podés dejarlas en blanco y escribir "INVENTAR" en la primera si querés que las creemos nosotros.
+  return`<div style="font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v1);text-align:center;margin:1.2rem 0 .4rem;">Trivia</div>
+  <p style="font-size:.85rem;color:var(--text-2);text-align:center;margin:0 0 1rem;line-height:1.65;">
+    10 preguntas sobre la pareja. Podés escribir "INVENTAR" y las creamos nosotros.
   </p>
   <div class="trivia-wrap"><table class="trivia-table">
     <thead><tr><th>#</th><th>Pregunta</th><th>Opciones a / b / c / d</th><th>Resp.</th></tr></thead>
@@ -1123,7 +1232,7 @@ function renderTrivia(){
       <td class="trivia-num">${i+1}</td>
       <td><input class="t-input" placeholder="¿...?" value="${t.q}" onchange="state.trivia[${i}].q=this.value"></td>
       <td style="min-width:150px;">
-        ${['a','b','c','d'].map((l,j)=>`<input class="t-input" placeholder="${l})" value="${t[l]}" onchange="state.trivia[${i}].${l}=this.value"${j<3?' style="margin-bottom:2px;"':''}>`).join('')}
+        ${['a','b','c','d'].map((l,j)=>`<input class="t-input" placeholder="${l})" value="${t[l]}" onchange="state.trivia[${i}].${l}=this.value"${j<3?' style=\"margin-bottom:2px;\"':''}>`).join('')}
       </td>
       <td class="t-ans"><select onchange="state.trivia[${i}].ans=this.value">
         ${['a','b','c','d'].map(x=>`<option ${t.ans===x?'selected':''}>${x}</option>`).join('')}
@@ -1132,7 +1241,6 @@ function renderTrivia(){
   </table></div>`;
 }
 
-/* ══ ESTÉTICA ════════════════════════════════ */
 function renderEstética(){
   const steps=getSteps(state.eventType);
   const step=steps.length-2;
@@ -1147,17 +1255,40 @@ function renderEstética(){
       </div>
       <div class="theme-tick"></div>
     </label>`).join('');
-
   return`<div class="form-card">
     <div class="card-eyebrow">Paso ${step} de ${steps.length-1}</div>
     <div class="card-title">Estética & Tema Visual</div>
-    <div class="card-subtitle">Elegí el universo visual de tu invitación. Si querés algo diferente o a medida, marcá el más cercano y describilo abajo.</div>
+    <div class="card-subtitle">Elegí el universo visual de tu invitación.</div>
     <div class="card-rule"></div>
     <div class="theme-grid">${grid}</div>
     <input type="hidden" id="f_theme_code" value="${state.data.theme_code||''}">
     <div class="field" style="margin-top:1.3rem;">
-      <label>Ajustes, referencias o colores específicos <span class="hint">— opcional</span></label>
-      <textarea id="f_theme_notes" placeholder="Links de inspiración, colores de marca, ambiente...">${state.data.theme_notes||''}</textarea>
+      <label>Ajustes o referencias <span class="hint">— opcional</span></label>
+      <textarea id="f_theme_notes" placeholder="Links de inspiración, colores, ambiente...">${state.data.theme_notes||''}</textarea>
+    </div>
+    <div class="field">
+      <label>Música de fondo <span class="hint">— Spotify, YouTube, mp3</span></label>
+      <input type="url" id="f_music_url" value="${state.data.music_url||''}" placeholder="https://...">
+    </div>
+    ${nav(step-1,step+1)}
+  </div>`;
+}
+
+function renderPersonalizado(){
+  const steps=getSteps(state.eventType);
+  const step=steps.length-2;
+  return`<div class="form-card">
+    <div class="card-eyebrow">Paso ${step} de ${steps.length-1}</div>
+    <div class="card-title">Estilo de la Invitación</div>
+    <div class="card-subtitle">Contanos cómo imaginás el diseño. Nosotros lo hacemos realidad.</div>
+    <div class="card-rule"></div>
+    <div class="field">
+      <label>¿Cómo imaginás el estilo? <span class="hint">— colores, ambiente, referencias</span></label>
+      <textarea id="f_theme_notes" placeholder="Quiero algo alegre con colores pastel / Algo oscuro y elegante..." style="min-height:120px;">${state.data.theme_notes||''}</textarea>
+    </div>
+    <div class="field">
+      <label>Links de referencia <span class="hint">— Pinterest, Instagram</span></label>
+      <input type="url" id="f_theme_ref" value="${state.data.theme_ref||''}" placeholder="https://pinterest.com/...">
     </div>
     <div class="field">
       <label>Música de fondo <span class="hint">— Spotify, YouTube, mp3</span></label>
@@ -1175,20 +1306,18 @@ function selTheme(code,el){
   if(h) h.value=code;
 }
 
-/* ══ TÉCNICO ══════════════════════════════ */
-function renderTécnico(){
+function renderCierre(){
   const steps=getSteps(state.eventType);
-  const step=steps.length-1;
   return`<div class="form-card">
-    <div class="card-eyebrow">Último paso 🎉</div>
-    <div class="card-title">Información Técnica</div>
-    <div class="card-subtitle">Todo opcional — lo que no sepas lo coordinamos juntos.</div>
+    <div class="card-eyebrow">¡Último paso! 🎉</div>
+    <div class="card-title">Casi listo</div>
+    <div class="card-subtitle">Solo unos datos finales y te contactamos.</div>
     <div class="card-rule"></div>
     <div class="field-row">
-      <div class="field"><label>URL del sitio <span class="hint">— si ya tienen</span></label>
-        <input type="url" id="f_site_url" value="${state.data.site_url||''}" placeholder="https://..."></div>
       <div class="field"><label>¿Cuántos invitados aprox.?</label>
         <input type="number" id="f_guests_count" value="${state.data.guests_count||''}" placeholder="100"></div>
+      <div class="field"><label>País del evento</label>
+        <input type="text" id="f_country" value="${state.data.country||'Argentina'}" placeholder="Argentina"></div>
     </div>
     <div class="field-row">
       <div class="field"><label>¿Confirmación de asistencia?</label>
@@ -1197,20 +1326,18 @@ function renderTécnico(){
           <option value="si" ${state.data.wants_rsvp==='si'?'selected':''}>Sí</option>
           <option value="no" ${state.data.wants_rsvp==='no'?'selected':''}>No</option>
         </select></div>
-      <div class="field"><label>País del evento</label>
-        <input type="text" id="f_country" value="${state.data.country||''}" placeholder="Argentina"></div>
     </div>
-    <div class="field"><label>Notas adicionales, referencias, links de inspiración</label>
-      <textarea id="f_extra_notes" placeholder="Cualquier detalle extra...">${state.data.extra_notes||''}</textarea>
+    <div class="field">
+      <label>Notas adicionales <span class="hint">— opcional</span></label>
+      <textarea id="f_extra_notes" placeholder="Cualquier detalle extra, consultas...">${state.data.extra_notes||''}</textarea>
     </div>
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>
-      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">ENVIAR BRIEFING ✨</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">ENVIAR ✦</button>
     </div>
   </div>`;
 }
 
-/* ══ NAV ══════════════════════════════════ */
 function nav(prev,next){
   return`<div class="btn-row">
     ${prev>0?`<button class="btn btn-ghost" onclick="prevStep()">← Atrás</button>`:''}
