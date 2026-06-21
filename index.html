@@ -754,7 +754,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) s
     <div class="success-ring">🎉</div>
     <div class="success-title">¡Brillante! Ya recibimos tu briefing</div>
     <p class="success-msg">En las próximas <strong style="color:var(--v1)">48 horas</strong> nos ponemos en contacto con un primer avance de tu invitación. ¡Va a ser espectacular!</p>
-    <p class="success-msg" style="margin-top:.8rem;font-size:.82rem;opacity:.55;">Revisá tu correo — te enviamos una copia de tus respuestas.</p>
+    <p class="success-msg" style="margin-top:.8rem;font-size:.82rem;opacity:.55;">Si tenés urgencia, escribinos por WhatsApp y lo aceleramos.</p>
   </div>
 </div>
 
@@ -864,17 +864,8 @@ const FD={
       {id:'dress_code',       label:'Dress code', toggle:true},
     ]},
     {section:'Historia',fields:[
-      {id:'story_met',       label:'¿Cómo se conocieron?',       ph:'Nos conocimos en...',ta:true,wide:true,hint:'Podés escribir "INVENTAR" y lo hacemos nosotros'},
-      {id:'story_first_date',label:'¿Cuál fue su primera cita?', ph:'La primera cita fue...',ta:true,wide:true},
-      {id:'story_proposal',  label:'¿Cómo fue la propuesta?',    ph:'La propuesta fue...',ta:true,wide:true},
+      {id:'story_met',  label:'Contanos un poco de la pareja',ph:'Cómo se conocieron, algo que los identifique...',ta:true,wide:true,hint:'Opcional — esto lo afinamos juntos después'},
     ]},
-    {section:'Mesas',fields:[
-      {id:'tables_count',   label:'Cantidad de mesas',  ph:'10',type:'number'},
-      {id:'tables_capacity',label:'Lugares por mesa',   ph:'10',type:'number'},
-      {id:'tables_honor',   label:'¿Mesa de honor?',    sel:['— Elegir —','Sí','No']},
-      {id:'tables_names',   label:'Nombres de las mesas',ph:'Mesa 1, Mesa 2 / Mesa Rosas...',wide:true},
-    ]},
-    {section:'Trivia',trivia:true},
   ],
   quinceanera:[
     {section:'El/La Homenajeado/a',fields:[
@@ -1361,6 +1352,8 @@ function restoreData(){
 
 /* ══ SUBMIT ══════════════════════════════ */
 async function submitForm(){
+  if(state._submitting) return; // evita duplicados por doble clic / reintentos
+  state._submitting=true;
   saveData();
   const btn=document.getElementById('submitBtn');
   btn.disabled=true;btn.textContent='Enviando...';
@@ -1368,7 +1361,11 @@ async function submitForm(){
     const p=buildPayload();
     const {error}=await sbInsert(p);
     if(error) throw new Error(error.message||'Error Supabase');
-    await sendEmail(p);
+
+    // El email es un "nice to have": si falla, no debe romper la experiencia
+    // del cliente ni mostrar error — el briefing YA se guardó correctamente.
+    try{ await sendEmail(p); }catch(emailErr){ /* fallo silencioso */ }
+
     document.getElementById('formArea').style.display='none';
     document.getElementById('progressWrap').style.display='none';
     const s=document.getElementById('successScreen');
@@ -1376,6 +1373,7 @@ async function submitForm(){
     requestAnimationFrame(()=>s.classList.add('vis'));
     window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){
+    state._submitting=false;
     showToast('Error al enviar. Reintentá.',true);
     btn.disabled=false;btn.textContent='ENVIAR BRIEFING ✨';
   }
