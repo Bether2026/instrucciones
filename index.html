@@ -481,8 +481,8 @@ select option{background:#1a1228;color:var(--text);}
 }
 
 /* ── PLAN SELECTOR ── */
-.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.4rem;}
-@media(max-width:480px){.plan-grid{grid-template-columns:1fr;gap:.5rem;}}
+.plan-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-bottom:1.4rem;}
+@media(max-width:560px){.plan-grid{grid-template-columns:repeat(2,1fr);gap:.5rem;}}
 .plan-opt{
   border:1.5px solid var(--border);border-radius:14px;
   padding:1.1rem .8rem;text-align:center;cursor:pointer;
@@ -492,6 +492,14 @@ select option{background:#1a1228;color:var(--text);}
 .plan-opt::after{content:'';position:absolute;inset:0;border-radius:14px;opacity:0;transition:opacity .3s;}
 .plan-opt:hover{transform:translateY(-2px);}
 .plan-opt.selected{transform:translateY(-2px) scale(1.02);}
+.plan-nodecido::after{background:radial-gradient(circle,rgba(240,234,248,.08),transparent 70%);}
+.plan-nodecido:hover,.plan-nodecido.selected{border-color:rgba(240,234,248,.35);box-shadow:0 0 0 3px rgba(240,234,248,.07),0 8px 24px rgba(240,234,248,.1);}
+.plan-nodecido.selected::after{opacity:1;}
+.plan-nodecido .plan-badge{color:var(--text-2);}
+.plan-nodecido.selected .plan-check{background:rgba(240,234,248,.4);}
+.plan-esencial::after{background:radial-gradient(circle,rgba(255,200,80,.13),transparent 70%);}
+.plan-esencial:hover,.plan-esencial.selected{border-color:#ffc850;box-shadow:0 0 0 3px rgba(255,200,80,.12),0 8px 24px rgba(255,200,80,.18);}
+.plan-esencial.selected::after{opacity:1;}
 .plan-basic::after{background:radial-gradient(circle,rgba(136,184,232,.12),transparent 70%);}
 .plan-basic:hover,.plan-basic.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(136,184,232,.12),0 8px 24px rgba(136,184,232,.15);}
 .plan-basic.selected::after{opacity:1;}
@@ -502,6 +510,7 @@ select option{background:#1a1228;color:var(--text);}
 .plan-elite:hover,.plan-elite.selected{border-color:var(--o1);box-shadow:0 0 0 3px rgba(255,157,77,.12),0 8px 24px rgba(255,157,77,.18);}
 .plan-elite.selected::after{opacity:1;}
 .plan-badge{font-family:var(--display);font-size:.55rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
+.plan-esencial .plan-badge{color:#ffc850;}
 .plan-basic  .plan-badge{color:var(--blue);}
 .plan-premium .plan-badge{background:linear-gradient(135deg,var(--v1),var(--p1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .plan-elite  .plan-badge{color:var(--o1);}
@@ -510,6 +519,7 @@ select option{background:#1a1228;color:var(--text);}
 .plan-check{position:absolute;top:.45rem;right:.45rem;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;animation:checkPop .35s var(--spring);}
 .plan-opt.selected .plan-check{display:flex;}
 .plan-check::after{content:'✓';font-size:.55rem;color:white;font-weight:800;}
+.plan-esencial.selected .plan-check{background:#ffc850;}
 .plan-basic.selected  .plan-check{background:var(--blue);}
 .plan-premium.selected .plan-check{background:linear-gradient(135deg,var(--v1),var(--p1));}
 .plan-elite.selected  .plan-check{background:var(--o1);}
@@ -519,9 +529,13 @@ select option{background:#1a1228;color:var(--text);}
 .card-subtitle{font-size:.88rem;color:var(--text-2);line-height:1.65;margin-bottom:1.4rem;text-align:center;}
 .card-eyebrow{font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--v1);margin-bottom:.3rem;text-align:center;display:block;}
 
-/* ── DATE PICKER ── */
-input[type=date]{color-scheme:dark;}
-input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(240deg);cursor:pointer;opacity:.7;}
+/* ── DATE PICKER — campo unificado con el resto ── */
+.date-wrap{position:relative;}
+.date-wrap input{padding-right:2.8rem;}
+.date-wrap .date-icon{
+  position:absolute;right:.85rem;top:50%;transform:translateY(-50%);
+  font-size:1.1rem;opacity:.5;pointer-events:none;
+}
 
 /* ── TOGGLE SI/NO ── */
 .toggle-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.3rem;}
@@ -838,9 +852,11 @@ const EVENTS=[
 ];
 
 const PLANS=[
-  {v:'basico',  cls:'plan-basic',  icon:'⭐',name:'BÁSICO',   desc:'La experiencia esencial'},
-  {v:'premium', cls:'plan-premium',icon:'💎',name:'PREMIUM',  desc:'Experiencia completa'},
-  {v:'elite',   cls:'plan-elite',  icon:'👑',name:'ELITE',    desc:'Todo incluido + extras'},
+  {v:'nodecido', cls:'plan-nodecido',icon:'🤔',name:'AÚN NO LO SÉ', desc:'Lo definimos juntos'},
+  {v:'esencial',cls:'plan-esencial',icon:'🎈',name:'ESENCIAL', desc:'Ideal para infantiles'},
+  {v:'basico',  cls:'plan-basic',   icon:'⭐',name:'BÁSICO',   desc:'Lo esencial bien hecho'},
+  {v:'premium', cls:'plan-premium', icon:'💎',name:'PREMIUM',  desc:'El más elegido'},
+  {v:'elite',   cls:'plan-elite',   icon:'👑',name:'ELITE',    desc:'Todo incluido + extras'},
 ];
 
 const EVENTS_WITH_THEMES=['casamiento','quinceanera'];
@@ -1134,6 +1150,17 @@ function selEvent(type,el,ev){
   if(ey) ey.textContent=`Paso 1 de ${getSteps(type).length-1}`;
 }
 
+/* Formato automático dd/mm/aaaa mientras escribe */
+function fmtDate(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>5) v=v.slice(0,5)+'/'+v.slice(5);
+  el.value=v.slice(0,10);
+}
+function saveDate(id,val){
+  state.data[id]=val;
+}
+
 function selPlan(plan,el){
   state.data.plan=plan;
   document.querySelectorAll('.plan-opt').forEach(e=>e.classList.remove('selected'));
@@ -1165,7 +1192,7 @@ function renderSection(sec,step){
 function renderField(f){
   const cls=f.wide?'style="grid-column:1/-1"':'';
   const lbl=`<label>${f.label}${f.hint?` <span class="hint">— ${f.hint}</span>`:''}</label>`;
-  if(f.date) return`<div class="field" ${cls}>${lbl}<input type="date" id="f_${f.id}" value="${state.data[f.id]||''}"></div>`;
+  if(f.date) return`<div class="field" ${cls}>${lbl}<div class="date-wrap"><input type="text" id="f_${f.id}" value="${state.data[f.id]||''}" placeholder="dd/mm/aaaa" maxlength="10" inputmode="numeric" oninput="fmtDate(this)" onblur="saveDate('${f.id}',this.value)"><span class="date-icon">📅</span></div></div>`;
   if(f.toggle){
     const isOpen=state.data[f.id]&&state.data[f.id]!=='no';
     return`<div class="field" ${cls}>
